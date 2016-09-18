@@ -70,19 +70,20 @@ if [ "$SPARK_MASTER_HOSTNAME" = "" ]; then
   SPARK_MASTER_HOSTNAME=`hostname -f`
 fi
 if [ "$SPARK_CONTAINER_DIR" != "" ]; then
+    
+    wget http://repo.bigstepcloud.com/bigstep/mesos/datalake-1.1-SNAPSHOT.jar -P $SPARK_CONTAINER_DIR
+
     cp $SPARK_CONTAINER_DIR/datalake-1.1-SNAPSHOT.jar /opt/spark-2.0.0-bin-hadoop2.7/jars/
     cp /root/google-collections-1.0.jar /opt/spark-2.0.0-bin-hadoop2.7/jars/
     
-    sed "s/# c.NotebookApp.certfile = u.*/c.NotebookApp.certfile = u\'$CERTFILE_PATH\'/" /root/.jupyter/jupyter_notebook_config.py >> /root/.jupyter/jupyter_notebook_config.py.tmp && \
+    sed "s/#c.NotebookApp.certfile = u.*/c.NotebookApp.certfile = u\'$CERTFILE_PATH\'/" /root/.jupyter/jupyter_notebook_config.py >> /root/.jupyter/jupyter_notebook_config.py.tmp && \
 	mv /root/.jupyter/jupyter_notebook_config.py.tmp /root/.jupyter/jupyter_notebook_config.py
-    sed "s/# c.NotebookApp.keyfile = u.*/c.NotebookApp.keyfile = u\'$KEYFILE_PATH\'/" /root/.jupyter/jupyter_notebook_config.py >> /root/.jupyter/jupyter_notebook_config.py.tmp && \
+    sed "s/#c.NotebookApp.keyfile = u.*/c.NotebookApp.keyfile = u\'$KEYFILE_PATH\'/" /root/.jupyter/jupyter_notebook_config.py >> /root/.jupyter/jupyter_notebook_config.py.tmp && \
 	mv /root/.jupyter/jupyter_notebook_config.py.tmp /root/.jupyter/jupyter_notebook_config.py
-    sed "s/# c.NotebookApp.notebook_dir = u.*/c.NotebookApp.notebook_dir = u\'$NOTEBOOK_DIR\'/" /root/.jupyter/jupyter_notebook_config.py >> /root/.jupyter/jupyter_notebook_config.py.tmp && \
+    sed "s/#c.NotebookApp.notebook_dir = u.*/c.NotebookApp.notebook_dir = u\'$NOTEBOOK_DIR\'/" /root/.jupyter/jupyter_notebook_config.py >> /root/.jupyter/jupyter_notebook_config.py.tmp && \
 	mv /root/.jupyter/jupyter_notebook_config.py.tmp /root/.jupyter/jupyter_notebook_config.py
-
-   # cp $SPARK_CONTAINER_DIR/datalake-1.1-SNAPSHOT.jar $HADOOP_CLASSPATH 
-   # cp $SPARK_CONTAINER_DIR/datalake-1.1-SNAPSHOT.jar $JAVA_CLASSPATH
-    cp $SPARK_CONTAINER_DIR/.k5keytab $KEYTAB_PATH_URI
+    
+    cp $SPARK_CONTAINER_DIR/user.keytab $KEYTAB_PATH_URI
 fi 
 
 sed "s/HOSTNAME_MASTER/$SPARK_MASTER_HOSTNAME/" /opt/spark-2.0.0-bin-hadoop2.7/conf/spark-defaults.conf.template >> /opt/spark-2.0.0-bin-hadoop2.7/conf/spark-defaults.conf.tmp && \
@@ -124,17 +125,13 @@ fi
 CLASSPATH=/opt/spark-2.0.0-bin-hadoop2.7/jars/
 
 if [ "$MODE" == "master" ]; then 
-	#${SPARK_HOME}/bin/spark-class "org.apache.spark.deploy.master.Master" -h $SPARK_MASTER_HOSTNAME --port $SPARK_MASTER_PORT --webui-port $PORT0 &
 	${SPARK_HOME}/bin/spark-class "org.apache.spark.deploy.master.Master" -h $SPARK_MASTER_HOSTNAME --port $SPARK_MASTER_PORT --webui-port $SPARK_MASTER_WEBUI_PORT &
-	jupyter notebook --ip=0.0.0.0 
+	jupyter notebook --ip=0.0.0.0 --log-level DEBUG
 
 elif [ "$MODE" == "worker" ]; then
-	#${SPARK_HOME}/bin/spark-class "org.apache.spark.deploy.worker.Worker" --webui-port $PORT1 --port $SPARK_WORKER_PORT $SPARK_MASTER_URL -c $CORES -m $MEM 
 	${SPARK_HOME}/bin/spark-class "org.apache.spark.deploy.worker.Worker" --webui-port $SPARK_WORKER_WEBUI_PORT --port $SPARK_WORKER_PORT $SPARK_MASTER_URL -c $CORES -m $MEM 
 else
-	#${SPARK_HOME}/bin/spark-class "org.apache.spark.deploy.master.Master" -h $SPARK_MASTER_HOSTNAME --port $SPARK_MASTER_PORT --webui-port $PORT0  &
-	#${SPARK_HOME}/bin/spark-class "org.apache.spark.deploy.worker.Worker" --webui-port $PORT1 --port $SPARK_WORKER_PORT $SPARK_MASTER_URL	-c $CORES -m $MEM  &
 	${SPARK_HOME}/bin/spark-class "org.apache.spark.deploy.master.Master" -h $SPARK_MASTER_HOSTNAME --port $SPARK_MASTER_PORT --webui-port $SPARK_MASTER_WEBUI_PORT &
 	${SPARK_HOME}/bin/spark-class "org.apache.spark.deploy.worker.Worker" --webui-port $SPARK_WORKER_WEBUI_PORT --port $SPARK_WORKER_PORT $SPARK_MASTER_URL	-c $CORES -m $MEM  &
-	jupyter notebook --ip=0.0.0.0 
+	jupyter notebook --ip=0.0.0.0 --log-level DEBUG
 fi
