@@ -96,6 +96,16 @@ COPY kernel.json /opt/conda/share/jupyter/kernels/scala/
 
 RUN cd /root && wget http://central.maven.org/maven2/com/google/collections/google-collections/1.0/google-collections-1.0.jar
 
+#Solution to readline library issues for SparkR context/session
+RUN mv $CONDA_DIR/envs/python3/lib/libreadline.so.6 /opt/conda/envs/python3/lib/libreadline.so.6.tmp && \
+    ln -s /usr/lib/libreadline.so.6 $CONDA_DIR/envs/python3/lib/libreadline.so.6
+RUN mv $CONDA_DIR/envs/ir/lib/libreadline.so.6  $CONDA_DIR/envs/ir/lib/libreadline.so.6.tmp && \
+    ln -s /usr/lib/libreadline.so.6 $CONDA_DIR/envs/ir/lib/libreadline.so.6
+RUN mv $CONDA_DIR/lib/libreadline.so.6 $CONDA_DIR/lib/libreadline.so.6.tmp && \
+    ln -s /usr/lib/libreadline.so.6 $CONDA_DIR/lib/libreadline.so.6
+RUN mv $CONDA_DIR/pkgs/readline-6.2-2/lib/libreadline.so.6 $CONDA_DIR/pkgs/readline-6.2-2/lib/libreadline.so.6.tmp && \
+    ln -s /usr/lib/libreadline.so.6 $CONDA_DIR/pkgs/readline-6.2-2/lib/libreadline.so.6
+
 #        SparkMaster  SparkMasterWebUI  SparkWorkerWebUI REST     Jupyter Spark
 EXPOSE    7077        8080              8081              6066    8888      4040     88
 
