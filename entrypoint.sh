@@ -74,6 +74,7 @@ if [ "$SPARK_CONTAINER_DIR" != "" ]; then
     wget http://repo.bigstepcloud.com/bigstep/mesos/datalake-1.1-SNAPSHOT.jar -P $SPARK_CONTAINER_DIR
 
     cp $SPARK_CONTAINER_DIR/datalake-1.1-SNAPSHOT.jar /opt/spark-2.0.0-bin-hadoop2.7/jars/
+    cp $SPARK_CONTAINER_DIR/datalake-1.1-SNAPSHOT.jar $HADOOP_HOME/share/hadoop/common/
     cp /root/google-collections-1.0.jar /opt/spark-2.0.0-bin-hadoop2.7/jars/
     
     sed "s/#c.NotebookApp.certfile = u.*/c.NotebookApp.certfile = u\'$CERTFILE_PATH\'/" /root/.jupyter/jupyter_notebook_config.py >> /root/.jupyter/jupyter_notebook_config.py.tmp && \
