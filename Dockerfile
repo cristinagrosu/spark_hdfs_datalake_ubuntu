@@ -26,6 +26,7 @@ ENV HADOOP_CONF_DIR /opt/hadoop/etc/hadoop
 
 ENV CONDA_DIR /opt/conda
 ENV PATH $CONDA_DIR/bin:$PATH
+ENV PATH $PATH:/$SPARK_HOME/bin/
 
 RUN cd /opt && \
     wget https://repo.continuum.io/miniconda/Miniconda2-4.1.11-Linux-x86_64.sh && \
