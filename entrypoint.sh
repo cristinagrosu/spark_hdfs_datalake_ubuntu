@@ -71,9 +71,9 @@ if [ "$SPARK_MASTER_HOSTNAME" = "" ]; then
 fi
 if [ "$SPARK_CONTAINER_DIR" != "" ]; then
     
-    wget http://repo.bigstepcloud.com/bigstep/datalake/datalake-client-libraries-1.3.jar -P /opt/spark-2.0.0-bin-hadoop2.7/jars/
+    wget https://github.com/bigstepinc/datalake-client-libraries/releases/download/untagged-e6884232914b2a933f3e/datalake-client-libraries-1.4-SNAPSHOT.jar -P /opt/spark-2.0.0-bin-hadoop2.7/jars/
 
-    cp /opt/spark-2.0.0-bin-hadoop2.7/jars/datalake-client-libraries-1.3.jar $HADOOP_HOME/share/hadoop/common/
+    cp /opt/spark-2.0.0-bin-hadoop2.7/jars/datalake-client-libraries-1.4-SNAPSHOT.jar $HADOOP_HOME/share/hadoop/common/
     cp /root/google-collections-1.0.jar /opt/spark-2.0.0-bin-hadoop2.7/jars/
     
     sed "s/#c.NotebookApp.certfile = u.*/c.NotebookApp.certfile = u\'$CERTFILE_PATH\'/" /root/.jupyter/jupyter_notebook_config.py >> /root/.jupyter/jupyter_notebook_config.py.tmp && \
