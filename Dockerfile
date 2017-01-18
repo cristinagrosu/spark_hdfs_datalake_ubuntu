@@ -87,7 +87,7 @@ RUN $CONDA_DIR/bin/conda install --yes \
     
 RUN $CONDA_DIR/bin/conda config --set auto_update_conda False
 
-RUN $CONDA_DIR/bin/conda create --yes -p /opt/conda/envs/python3 python=3.5 ipython ipywidgets pandas matplotlib scipy seaborn scikit-learn
+RUN CONDA_VERBOSE=3 $CONDA_DIR/bin/conda create --yes -p /opt/conda/envs/python3 python=3.5 ipython ipywidgets pandas matplotlib scipy seaborn scikit-learn
 RUN bash -c '. activate python3 && \
     python -m ipykernel.kernelspec --prefix=/opt/conda && \
     . deactivate'
