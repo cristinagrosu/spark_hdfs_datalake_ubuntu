@@ -80,6 +80,8 @@ RUN $CONDA_DIR/bin/conda install --yes \
     'seaborn' \
     'scikit-learn' && \
     $CONDA_DIR/bin/conda clean -yt
+    
+RUN conda config --set auto_update_conda False
 
 RUN $CONDA_DIR/bin/conda create --yes -p /opt/conda/envs/python3 python=3.5 ipython ipywidgets pandas matplotlib scipy seaborn scikit-learn
 RUN bash -c '. activate python3 && \
