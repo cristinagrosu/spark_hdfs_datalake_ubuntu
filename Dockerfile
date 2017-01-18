@@ -29,9 +29,13 @@ ENV PATH $CONDA_DIR/bin:$PATH
 ENV PATH $PATH:/$SPARK_HOME/bin/
 
 RUN cd /opt && \
-    wget https://repo.continuum.io/miniconda/Miniconda2-4.1.11-Linux-x86_64.sh && \
-     /bin/bash Miniconda2-4.1.11-Linux-x86_64.sh -b -p $CONDA_DIR && \
-     rm -rf Miniconda2-4.1.11-Linux-x86_64.sh 
+    #wget https://repo.continuum.io/miniconda/Miniconda2-4.1.11-Linux-x86_64.sh && \
+    # /bin/bash Miniconda2-4.1.11-Linux-x86_64.sh -b -p $CONDA_DIR && \
+    # rm -rf Miniconda2-4.1.11-Linux-x86_64.sh 
+
+    wget https://repo.continuum.io/miniconda/Miniconda2-4.2.12-Linux-x86_64.sh && \ 
+    /bin/bash Miniconda2-4.2.12-Linux-x86_64.sh  -b -p $CONDA_DIR && \
+     rm -rf  Miniconda2-4.2.12-Linux-x86_64.sh
 
 RUN export PATH=$PATH:/$CONDA_DIR/bin
 
