@@ -70,7 +70,7 @@ RUN cd /tmp && \
     cd incubator-toree && \
     # git checkout 87a9eb8ad08406ce0747e92f7714d4eb54153293 && \
     # git checkout 7c1bfb6df7130477c558e69bbb518b0af364e06a && \
-    make dist SHELL=/bin/bash APACHE_SPARK_VERDION=2.1.0 SCALA_VERSION=2.11 && \
+    make dist SHELL=/bin/bash APACHE_SPARK_VERSION=2.1.0 SCALA_VERSION=2.11 && \
     mv /tmp/incubator-toree/dist/toree /opt/toree-kernel && \
     chmod +x /opt/toree-kernel && \
     rm -rf /tmp/incubator-toree 
