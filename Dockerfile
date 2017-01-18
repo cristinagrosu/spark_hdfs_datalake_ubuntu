@@ -206,7 +206,7 @@ RUN apk --no-cache add --virtual ca-certificates
 RUN apk --no-cache add python postgresql-libs && \
     apk --no-cache add --virtual build-dependencies python-dev gcc musl-dev postgresql-dev wget 
 
-#        SparkMaster  SparkMasterWebUI  SparkWorkerWebUI REST     Jupyter Spark
-EXPOSE    7077        8080              8081              6066    8888      4040     88
+#        SparkMaster  SparkMasterWebUI  SparkWorkerWebUI REST     Jupyter Spark		Thrift
+EXPOSE    7077        8080              8081              6066    8888      4040     88   10000
 
 ENTRYPOINT ["/entrypoint.sh"]
