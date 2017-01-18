@@ -42,6 +42,11 @@ if [ "$USER_HOME_DIR" != "" ]; then
 	mv /opt/hadoop/etc/hadoop/core-site.xml.tmp /opt/hadoop/etc/hadoop/core-site.xml
 fi
 
+if [ "$DATALAKE_NODE" != "" ]; then
+	sed "s/DATALAKE_NODE/${DATALAKE_NODE}/" /opt/hadoop/etc/hadoop/core-site.xml >> /opt/hadoop/etc/hadoop/core-site.xml.tmp && \
+	mv /opt/hadoop/etc/hadoop/core-site.xml.tmp /opt/hadoop/etc/hadoop/core-site.xml
+fi
+
 if [ "$SPARK_MASTER_PORT" = "" ]; then
   SPARK_MASTER_PORT=7077
 fi
