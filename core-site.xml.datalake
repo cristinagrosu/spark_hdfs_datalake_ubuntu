@@ -1,6 +1,11 @@
 <configuration>
 
 <property>
+<name>fs.defaultFS</name>
+<value>DATALAKE_NODE/data_lake/USER_HOME_DIR</value>
+</property>
+
+<property>
 <name>fs.dl.impl</name>
 <value>com.bigstep.datalake.DLFileSystem</value>
 </property>
