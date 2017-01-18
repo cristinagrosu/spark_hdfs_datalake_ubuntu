@@ -1,6 +1,6 @@
 #!/bin/bash
 
-SPARK_HOME="/opt/spark-2.0.0-bin-hadoop2.7"
+SPARK_HOME="/opt/spark-2.1.0-bin-hadoop2.7"
 
 echo Using SPARK_HOME=$SPARK_HOME
 
@@ -25,7 +25,7 @@ rm -rf /opt/hadoop/etc/hadoop/core-site.xml
 if [ "$HDFS_MASTER" != "" ]; then
 	sed "s/HOSTNAME/$HDFS_MASTER/" /opt/hadoop/etc/hadoop/core-site.xml.template >> /opt/hadoop/etc/hadoop/core-site.xml
 else 
-	mv /opt/spark-2.0.0-bin-hadoop2.7/conf/core-site.xml.datalake /opt/hadoop/etc/hadoop/core-site.xml
+	mv /opt/spark-2.1.0-bin-hadoop2.7/conf/core-site.xml.datalake /opt/hadoop/etc/hadoop/core-site.xml
 fi
 
 if [ "$DATALAKE_USER" != "" ]; then
@@ -71,10 +71,10 @@ if [ "$SPARK_MASTER_HOSTNAME" = "" ]; then
 fi
 if [ "$SPARK_CONTAINER_DIR" != "" ]; then
     
-    wget https://github.com/bigstepinc/datalake-client-libraries/releases/download/untagged-e6884232914b2a933f3e/datalake-client-libraries-1.4-SNAPSHOT.jar -P /opt/spark-2.0.0-bin-hadoop2.7/jars/
+    wget https://github.com/bigstepinc/datalake-client-libraries/releases/download/untagged-e6884232914b2a933f3e/datalake-client-libraries-1.4-SNAPSHOT.jar -P /opt/spark-2.1.0-bin-hadoop2.7/jars/
 
-    cp /opt/spark-2.0.0-bin-hadoop2.7/jars/datalake-client-libraries-1.4-SNAPSHOT.jar $HADOOP_HOME/share/hadoop/common/
-    cp /root/google-collections-1.0.jar /opt/spark-2.0.0-bin-hadoop2.7/jars/
+    cp /opt/spark-2.1.0-bin-hadoop2.7/jars/datalake-client-libraries-1.4-SNAPSHOT.jar $HADOOP_HOME/share/hadoop/common/
+    cp /root/google-collections-1.0.jar /opt/spark-2.1.0-bin-hadoop2.7/jars/
     
     sed "s/#c.NotebookApp.certfile = u.*/c.NotebookApp.certfile = u\'$CERTFILE_PATH\'/" /root/.jupyter/jupyter_notebook_config.py >> /root/.jupyter/jupyter_notebook_config.py.tmp && \
 	mv /root/.jupyter/jupyter_notebook_config.py.tmp /root/.jupyter/jupyter_notebook_config.py
@@ -86,11 +86,11 @@ if [ "$SPARK_CONTAINER_DIR" != "" ]; then
     cp $SPARK_CONTAINER_DIR/user.keytab $KEYTAB_PATH_URI
 fi 
 
-sed "s/HOSTNAME_MASTER/$SPARK_MASTER_HOSTNAME/" /opt/spark-2.0.0-bin-hadoop2.7/conf/spark-defaults.conf.template >> /opt/spark-2.0.0-bin-hadoop2.7/conf/spark-defaults.conf.tmp && \
-mv /opt/spark-2.0.0-bin-hadoop2.7/conf/spark-defaults.conf.tmp /opt/spark-2.0.0-bin-hadoop2.7/conf/spark-defaults.conf
+sed "s/HOSTNAME_MASTER/$SPARK_MASTER_HOSTNAME/" /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf.template >> /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf.tmp && \
+mv /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf.tmp /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf
 
-sed "s/SPARK_UI_PORT/$SPARK_UI_PORT/" /opt/spark-2.0.0-bin-hadoop2.7/conf/spark-defaults.conf >> /opt/spark-2.0.0-bin-hadoop2.7/conf/spark-defaults.conf.tmp && \
-mv /opt/spark-2.0.0-bin-hadoop2.7/conf/spark-defaults.conf.tmp /opt/spark-2.0.0-bin-hadoop2.7/conf/spark-defaults.conf
+sed "s/SPARK_UI_PORT/$SPARK_UI_PORT/" /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf >> /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf.tmp && \
+mv /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf.tmp /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf
 
 #Disable AnacondaCloud extension
 sed "s/\"nb_anacondacloud\": true/\"nb_anacondacloud\": false/" /opt/conda/envs/python3/etc/jupyter/jupyter_notebook_config.json >> /opt/conda/envs/python3/etc/jupyter/jupyter_notebook_config.json.tmp 
@@ -146,7 +146,7 @@ if [ "$MODE" = "" ]; then
 MODE=$1
 fi
 
-CLASSPATH=/opt/spark-2.0.0-bin-hadoop2.7/jars/
+CLASSPATH=/opt/spark-2.1.0-bin-hadoop2.7/jars/
 
 if [ "$MODE" == "master" ]; then 
 	${SPARK_HOME}/bin/spark-class "org.apache.spark.deploy.master.Master" -h $SPARK_MASTER_HOSTNAME --port $SPARK_MASTER_PORT --webui-port $SPARK_MASTER_WEBUI_PORT &
