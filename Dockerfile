@@ -119,6 +119,93 @@ RUN apk add cairo-dev
 # Add hive-site.xml conf for metastore configuration
 ADD hive-site.xml /opt/spark-2.1.0-bin-hadoop2.7/conf/
 
+# Add PostgreSQL client to be used to configure a remote PostgreSQL database
+ENV LANG en_US.utf8
+ENV PG_MAJOR 9.6
+ENV PG_VERSION 9.6.1
+ENV PG_SHA256 e5101e0a49141fc12a7018c6dad594694d3a3325f5ab71e93e0e51bd94e51fcd
+
+RUN set -ex \
+	\
+	&& apk add --no-cache --virtual .fetch-deps \
+		ca-certificates \
+		openssl \
+		tar \
+	\
+	&& wget -O postgresql.tar.bz2 "https://ftp.postgresql.org/pub/source/v$PG_VERSION/postgresql-$PG_VERSION.tar.bz2" \
+	&& echo "$PG_SHA256 *postgresql.tar.bz2" | sha256sum -c - \
+	&& mkdir -p /usr/src/postgresql \
+	&& tar \
+		--extract \
+		--file postgresql.tar.bz2 \
+		--directory /usr/src/postgresql \
+		--strip-components 1 \
+	&& rm postgresql.tar.bz2 \
+	\
+	&& apk add --no-cache --virtual .build-deps \
+		bison \
+		flex \
+		gcc \
+        libc-dev \
+		libedit-dev \
+		libxml2-dev \
+		libxslt-dev \
+		make \
+		openssl-dev \
+		perl \
+		util-linux-dev \
+		zlib-dev \
+	\
+	&& cd /usr/src/postgresql \
+	&& ./configure \
+		--enable-integer-datetimes \
+		--enable-thread-safety \
+		--enable-tap-tests \
+		--disable-rpath \
+		--with-uuid=e2fs \
+		--with-gnu-ld \
+		--with-pgport=5432 \
+		--with-system-tzdata=/usr/share/zoneinfo \
+		--prefix=/usr/local \
+		\
+		--with-openssl \
+		--with-libxml \
+		--with-libxslt \
+	&& make -j "$(getconf _NPROCESSORS_ONLN)" world \
+	&& make install-world \
+	&& make -C contrib install \
+	\
+	&& runDeps="$( \
+		scanelf --needed --nobanner --recursive /usr/local \
+			| awk '{ gsub(/,/, "\nso:", $2); print "so:" $2 }' \
+			| sort -u \
+			| xargs -r apk info --installed \
+			| sort -u \
+	)" \
+	&& apk add --no-cache --virtual .postgresql-rundeps \
+		$runDeps \
+		bash \
+		su-exec \
+		tzdata \
+	&& apk del .fetch-deps .build-deps \
+	&& cd / \
+	&& rm -rf \
+		/usr/src/postgresql \
+		/usr/local/include/* \
+		/usr/local/share/doc \
+		/usr/local/share/man \
+	&& find /usr/local -name '*.a' -delete
+
+ENV PATH /usr/lib/postgresql/$PG_MAJOR/bin:$PATH
+RUN apk add  musl 
+RUN apk add --update libbz2 libcrypto1.0 expat libffi gdbm ncurses-libs readline sqlite-libs libssl1.0 zlib
+RUN apk add python
+RUN apk --no-cache add openssl
+RUN apk --no-cache add --virtual ca-certificates
+
+RUN apk --no-cache add python postgresql-libs && \
+    apk --no-cache add --virtual build-dependencies python-dev gcc musl-dev postgresql-dev wget 
+
 #        SparkMaster  SparkMasterWebUI  SparkWorkerWebUI REST     Jupyter Spark
 EXPOSE    7077        8080              8081              6066    8888      4040     88
 
