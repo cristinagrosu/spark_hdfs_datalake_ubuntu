@@ -4,22 +4,22 @@ RUN apk add --update alpine-sdk
 RUN apk add libffi && apk add jq
 
 
-# Install Spark 1.6.2
-RUN cd /opt && wget http://d3kbcqa49mib13.cloudfront.net/spark-2.0.0-bin-hadoop2.7.tgz
-RUN tar xzvf /opt/spark-2.0.0-bin-hadoop2.7.tgz
-RUN rm  /opt/spark-2.0.0-bin-hadoop2.7.tgz
+# Install Spark 2.1.0
+RUN cd /opt && wget http://d3kbcqa49mib13.cloudfront.net/spark-2.1.0-bin-hadoop2.7.tgz
+RUN tar xzvf /opt/spark-2.1.0-bin-hadoop2.7.tgz
+RUN rm  /opt/spark-2.1.0-bin-hadoop2.7.tgz
 
 # Spark pointers
-ENV SPARK_HOME /opt/spark-2.0.0-bin-hadoop2.7
+ENV SPARK_HOME /opt/spark-2.1.0-bin-hadoop2.7
 ENV R_LIBS_USER $SPARK_HOME/R/lib:/opt/conda/envs/ir/lib/R/library:/opt/conda/lib/R/library
 ENV PYTHONPATH $SPARK_HOME/python:$SPARK_HOME/python/lib/py4j-0.8.2.1-src.zip
 
-RUN mv spark-2.0.0-bin-hadoop2.7 /opt/ && mkdir -p /user && mkdir -p /user/notebooks && mkdir -p /user/datasets
+RUN mv spark-2.1.0-bin-hadoop2.7 /opt/ && mkdir -p /user && mkdir -p /user/notebooks && mkdir -p /user/datasets
 
 ADD entrypoint.sh /
-ADD core-site.xml.datalake /opt/spark-2.0.0-bin-hadoop2.7/conf/
+ADD core-site.xml.datalake /opt/spark-2.1.0-bin-hadoop2.7/conf/
 RUN chmod 777 /entrypoint.sh
-ADD spark-defaults.conf /opt/spark-2.0.0-bin-hadoop2.7/conf/spark-defaults.conf.template
+ADD spark-defaults.conf /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf.template
 
 ENV HADOOP_HOME /opt/hadoop
 ENV HADOOP_CONF_DIR /opt/hadoop/etc/hadoop
