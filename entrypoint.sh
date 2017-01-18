@@ -177,6 +177,8 @@ if [ "$POSTGRES_PASSWORD" != "" ]; then
 	cp /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml /opt/hadoop/etc/hadoop/
 fi
 
+cp /opt/hadoop/etc/hadoop/core-site.xml /opt/spark-2.1.0-bin-hadoop2.7/conf/
+
 if [ "$MODE" = "" ]; then
 MODE=$1
 fi
