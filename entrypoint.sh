@@ -71,9 +71,9 @@ if [ "$SPARK_MASTER_HOSTNAME" = "" ]; then
 fi
 if [ "$SPARK_CONTAINER_DIR" != "" ]; then
     
-    wget https://github.com/bigstepinc/datalake-client-libraries/releases/download/untagged-e6884232914b2a933f3e/datalake-client-libraries-1.4-SNAPSHOT.jar -P /opt/spark-2.1.0-bin-hadoop2.7/jars/
+    wget https://github.com/bigstepinc/datalake-client-libraries/releases/download/untagged-f557695f573fa1823db2/datalake-client-libraries-1.5-SNAPSHOT.jar -P /opt/spark-2.1.0-bin-hadoop2.7/jars/
 
-    cp /opt/spark-2.1.0-bin-hadoop2.7/jars/datalake-client-libraries-1.4-SNAPSHOT.jar $HADOOP_HOME/share/hadoop/common/
+    cp /opt/spark-2.1.0-bin-hadoop2.7/jars/datalake-client-libraries-1.5-SNAPSHOT.jar $HADOOP_HOME/share/hadoop/common/
     cp /root/google-collections-1.0.jar /opt/spark-2.1.0-bin-hadoop2.7/jars/
     
     sed "s/#c.NotebookApp.certfile = u.*/c.NotebookApp.certfile = u\'$CERTFILE_PATH\'/" /root/.jupyter/jupyter_notebook_config.py >> /root/.jupyter/jupyter_notebook_config.py.tmp && \
@@ -140,7 +140,37 @@ SPARK_MASTER_URL="spark://$SPARK_MASTER_HOSTNAME:$SPARK_MASTER_PORT"
 echo "Using SPARK_MASTER_URL=$SPARK_MASTER_URL"
 
 #export SPARK_OPTS="--driver-java-options=-Xms1024M --driver-java-options=-Dlog4j.logLevel=info --master $SPARK_MASTER_URL"
-export SPARK_OPTS="--driver-java-options=-$JAVA_DRIVER_OPTS --driver-java-options=-Dlog4j.logLevel=info --master $SPARK_MASTER_URL"
+#export SPARK_OPTS="--driver-java-options=-Xms1024M --driver-java-options=-Dlog4j.logLevel=info --master $SPARK_MASTER_URL"
+export SPARK_OPTS="--driver-java-options=-$JAVA_DRIVER_OPTS --driver-java-options=-Dlog4j.logLevel=info --master $SPARK_MASTER_URL --files /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml"
+
+# Get Spark Thrift Postgresql connector
+wget http://central.maven.org/maven2/org/postgresql/postgresql/9.4.1211/postgresql-9.4.1211.jar -P /opt/spark-2.1.0-bin-hadoop2.7/jars/
+
+if [ "$POSTGRES_HOSTNAME" != "" ]; then
+	sed "s/POSTGRES_HOSTNAME/$POSTGRES_HOSTNAME/" /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml >> /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml.tmp && \
+	mv /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml.tmp /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml
+fi
+
+if [ "$POSTGRES_PORT" != "" ]; then
+	sed "s/POSTGRES_PORT/$POSTGRES_PORT/" /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml >> /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml.tmp && \
+	mv /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml.tmp /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml
+fi
+
+if [ "$POSTGRES_DB" != "" ]; then
+	sed "s/POSTGRES_DB/$POSTGRES_DB/" /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml >> /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml.tmp && \
+	mv /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml.tmp /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml
+fi
+
+if [ "$POSTGRES_USER" != "" ]; then
+	sed "s/POSTGRES_USER/$POSTGRES_USER/" /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml >> /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml.tmp && \
+	mv /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml.tmp /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml
+fi
+
+if [ "$POSTGRES_PASSWORD" != "" ]; then
+	sed "s/POSTGRES_PASSWORD/$POSTGRES_PASSWORD/" /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml >> /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml.tmp && \
+	mv /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml.tmp /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml
+	cp /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml /opt/hadoop/etc/hadoop/
+fi
 
 if [ "$MODE" = "" ]; then
 MODE=$1
