@@ -218,6 +218,9 @@ cp logo.png $CONDA_DIR/pkgs/notebook-4.2.3-py35_0/lib/python3.5/site-packages/no
 cp logo.png $CONDA_DIR/doc/global/template/images/logo.png
 rm -rf logo.png
 
+# Add Script for hashing password
+ADD password.py /opt
+
 #        SparkMaster  SparkMasterWebUI  SparkWorkerWebUI REST     Jupyter Spark		Thrift
 EXPOSE    7077        8080              8081              6066    8888      4040     88   10000
 
