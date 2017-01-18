@@ -109,9 +109,9 @@ RUN mv $CONDA_DIR/pkgs/readline-6.2-2/lib/libreadline.so.6 $CONDA_DIR/pkgs/readl
     ln -s /usr/lib/libreadline.so.6 $CONDA_DIR/pkgs/readline-6.2-2/lib/libreadline.so.6
     
 #Add Getting Started Notebooks
-RUN wget https://www.dropbox.com/s/ogautca0vbcvpsd/DataLab%20Getting%20Started%20in%20Scala.ipynb?dl=1 -O /user/notebooks/DataLab\ Getting\ Started\ in\ Scala.ipynb
-RUN wget https://www.dropbox.com/s/oalyod343ku9s3x/DataLab%20Getting%20Started%20in%20R.ipynb?dl=1 -O /user/notebooks/DataLab\ Getting\ Started\ in\ R.ipynb
-RUN wget https://www.dropbox.com/s/yyrilocrsy874wt/DataLab%20Getting%20Started%20in%20Python.ipynb?dl=1 -O /user/notebooks/DataLab\ Getting\ Started\ in\ Python.ipynb
+RUN wget https://www.dropbox.com/s/gfz7225ug0e6vwo/DataLab%20Getting%20Started%20in%20Scala.ipynb?dl=1 -O /user/notebooks/DataLab\ Getting\ Started\ in\ Scala.ipynb
+RUN wget https://www.dropbox.com/s/rgriprne2r8hin7/DataLab%20Getting%20Started%20in%20R.ipynb?dl=1 -O /user/notebooks/DataLab\ Getting\ Started\ in\ R.ipynb
+RUN wget https://www.dropbox.com/s/ih0xie29djlgzzo/DataLab%20Getting%20Started%20in%20Python.ipynb?dl=1 -O /user/notebooks/DataLab\ Getting\ Started\ in\ Python.ipynb
 
 #        SparkMaster  SparkMasterWebUI  SparkWorkerWebUI REST     Jupyter Spark
 EXPOSE    7077        8080              8081              6066    8888      4040     88
