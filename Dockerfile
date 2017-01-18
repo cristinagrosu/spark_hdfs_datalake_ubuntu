@@ -116,6 +116,9 @@ RUN wget https://www.dropbox.com/s/ih0xie29djlgzzo/DataLab%20Getting%20Started%2
 #Add cairo-dev for R notebook
 RUN apk add cairo-dev
 
+# Add hive-site.xml conf for metastore configuration
+ADD hive-site.xml /opt/spark-2.1.0-bin-hadoop2.7/conf/
+
 #        SparkMaster  SparkMasterWebUI  SparkWorkerWebUI REST     Jupyter Spark
 EXPOSE    7077        8080              8081              6066    8888      4040     88
 
