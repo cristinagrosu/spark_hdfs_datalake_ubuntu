@@ -153,18 +153,18 @@ if [ "$POSTGRES_PORT" != "" ]; then
 	mv /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml.tmp /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml
 fi
 
-if [ "$POSTGRES_DB" != "" ]; then
-	sed "s/POSTGRES_DB/$POSTGRES_DB/" /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml >> /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml.tmp && \
+if [ "$SPARK_POSTGRES_DB" != "" ]; then
+	sed "s/SPARK_POSTGRES_DB/$SPARK_POSTGRES_DB/" /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml >> /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml.tmp && \
 	mv /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml.tmp /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml
 fi
 
-if [ "$POSTGRES_USER" != "" ]; then
-	sed "s/POSTGRES_USER/$POSTGRES_USER/" /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml >> /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml.tmp && \
+if [ "$SPARK_POSTGRES_USER" != "" ]; then
+	sed "s/SPARK_POSTGRES_USER/$SPARK_POSTGRES_USER/" /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml >> /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml.tmp && \
 	mv /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml.tmp /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml
 fi
 
-if [ "$POSTGRES_PASSWORD" != "" ]; then
-	sed "s/POSTGRES_PASSWORD/$POSTGRES_PASSWORD/" /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml >> /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml.tmp && \
+if [ "$SPARK_POSTGRES_PASSWORD" != "" ]; then
+	sed "s/SPARK_POSTGRES_PASSWORD/$SPARK_POSTGRES_PASSWORD/" /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml >> /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml.tmp && \
 	mv /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml.tmp /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml
 	cp /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml /opt/hadoop/etc/hadoop/
 	
