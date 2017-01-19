@@ -1,7 +1,7 @@
 <configuration>
   <property>
       <name>javax.jdo.option.ConnectionURL</name>
-      <value>jdbc:postgresql://POSTGRES_HOSTNAME:POSTGRES_PORT/POSTGRES_DB</value>
+      <value>jdbc:postgresql://POSTGRES_HOSTNAME:POSTGRES_PORT/SPARK_POSTGRES_DB</value>
   </property>
   <property>
       <name>javax.jdo.option.ConnectionDriverName</name>
@@ -9,11 +9,11 @@
   </property>
   <property>
       <name>javax.jdo.option.ConnectionUserName</name>
-      <value>POSTGRES_USER</value>
+      <value>SPARK_POSTGRES_USER</value>
   </property>
   <property>
       <name>javax.jdo.option.ConnectionPassword</name>
-      <value>POSTGRES_PASSWORD</value>
+      <value>SPARK_POSTGRES_PASSWORD</value>
   </property>
   <property>     
       <name>datanucleus.autoCreateSchema</name>     
