@@ -2,7 +2,7 @@
 
 <property>
 <name>fs.defaultFS</name>
-<value>dl://DATALAKE_NODE/data_lake/USER_HOME_DIR</value>
+<value>dl://DATALAKE_NODE:14000/data_lake/USER_HOME_DIR</value>
 </property>
 
 <property>
