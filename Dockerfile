@@ -131,9 +131,9 @@ RUN wget https://www.dropbox.com/s/ehlqagl5t0ed60h/logo.png?dl=1 -O logo.png
 RUN cp logo.png $CONDA_DIR/envs/python3/doc/global/template/images/logo.png && \
     cp logo.png $CONDA_DIR/envs/python3/lib/python3.5/site-packages/notebook/static/base/images/logo.png && \
     cp logo.png $CONDA_DIR/lib/python2.7/site-packages/notebook/static/base/images/logo.png && \
-    cp logo.png $CONDA_DIR/pkgs/notebook-4.2.3-py27_0/lib/python2.7/site-packages/notebook/static/base/images/logo.png && \
-    cp logo.png $CONDA_DIR/pkgs/qt-5.6.0-0/doc/global/template/images/logo.png && \
-    cp logo.png $CONDA_DIR/pkgs/notebook-4.2.3-py35_0/lib/python3.5/site-packages/notebook/static/base/images/logo.png && \
+    #cp logo.png $CONDA_DIR/pkgs/notebook-4.2.3-py27_0/lib/python2.7/site-packages/notebook/static/base/images/logo.png && \
+    #cp logo.png $CONDA_DIR/pkgs/qt-5.6.0-0/doc/global/template/images/logo.png && \
+    #cp logo.png $CONDA_DIR/pkgs/notebook-4.2.3-py35_0/lib/python3.5/site-packages/notebook/static/base/images/logo.png && \
     cp logo.png $CONDA_DIR/doc/global/template/images/logo.png && \
     rm -rf logo.png
 
