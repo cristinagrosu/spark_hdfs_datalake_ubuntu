@@ -6,7 +6,7 @@
 </property>
 
 <property>
-<name>fs.defaultEndpoint</name>
+<name>fs.dl.impl.defaultEndpoint</name>
 <value>/data_lake/USER_HOME_DIR</value>
 </property>
 
