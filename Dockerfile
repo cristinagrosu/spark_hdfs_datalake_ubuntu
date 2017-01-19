@@ -136,6 +136,12 @@ RUN cp logo.png $CONDA_DIR/envs/python3/doc/global/template/images/logo.png && \
     #cp logo.png $CONDA_DIR/pkgs/notebook-4.2.3-py35_0/lib/python3.5/site-packages/notebook/static/base/images/logo.png && \
     cp logo.png $CONDA_DIR/doc/global/template/images/logo.png && \
     rm -rf logo.png
+    
+RUN wget https://www.dropbox.com/s/rcmulncpdqmv7l7/hive-schema-1.2.0.postgres.sql?dl=1 -O /opt/spark-2.1.0-bin-hadoop2.7/jars/hive-schema-1.2.0.postgres.sql && \
+    wget https://www.dropbox.com/s/r1uutdfe1pn9vci/hive-txn-schema-0.13.0.postgres.sql?dl=1 -O /opt/spark-2.1.0-bin-hadoop2.7/jars/hive-txn-schema-0.13.0.postgres.sql && \
+    wget https://www.dropbox.com/s/7utv1k27tz2t6l4/hive-txn-schema-0.14.0.postgres.sql?dl=1 -O /opt/spark-2.1.0-bin-hadoop2.7/jars/hive-txn-schema-0.14.0.postgres.sql
+
+RUN apk add postgresql-client
 
 # Add Script for hashing password
 ADD password.py /opt
