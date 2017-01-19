@@ -9,7 +9,7 @@ echo Using SPARK_HOME=$SPARK_HOME
 . "${SPARK_HOME}/bin/load-spark-env.sh"
 
 export JAVA_HOME="/opt/jdk"                                                                                                                               
-export PATH="$PATH:/opt/jdk/bin:/opt/jdk/jre/bin"
+export PATH="$PATH:/opt/jdk/bin:/opt/jdk/jre/bin:/opt/hadoop/bin/:/opt/hadoop/sbin/"
 export HADOOP_HOME="/opt/hadoop"
 export PATH="$PATH:$HADOOP_HOME/bin:$HADOOP_HOME/sbin:$SPARK_HOME/bin:$SPARK_HOME/sbin"
 export HADOOP_CONF_DIR="$HADOOP_HOME/etc/hadoop"
@@ -186,6 +186,13 @@ if [ "$NOTEBOOK_PASSWORD" != "" ]; then
     rm -rf /opt/password.py 
 fi 
 
+hdfs dfs -mkdir /tmp
+hdfs dfs -mkdir /tmp/hive 
+
+#Check if there is no workaround this permissions
+hdfs dfs -chmod -R 777 /tmp/hive
+
+hdfs dfs -mkdir /spark-warehouse
 
 if [ "$MODE" = "" ]; then
 MODE=$1
