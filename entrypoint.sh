@@ -41,7 +41,7 @@ if [ "$USER_HOME_DIR" != "" ]; then
 	sed "s/USER_HOME_DIR/$USER_HOME_DIR/" /opt/hadoop/etc/hadoop/core-site.xml >> /opt/hadoop/etc/hadoop/core-site.xml.tmp && \
 	mv /opt/hadoop/etc/hadoop/core-site.xml.tmp /opt/hadoop/etc/hadoop/core-site.xml
 	
-	sed "s/USER_HOME_DIR/$USER_HOME_DIR/" /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf >> /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf.tmp && \
+	sed "s/USER_HOME_DIR/$USER_HOME_DIR/" /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf.template >> /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf.tmp && \
 	mv /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf.tmp /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf
 fi
 
@@ -49,7 +49,7 @@ if [ "$DATALAKE_NODE" != "" ]; then
 	sed "s/DATALAKE_NODE/${DATALAKE_NODE}/" /opt/hadoop/etc/hadoop/core-site.xml >> /opt/hadoop/etc/hadoop/core-site.xml.tmp && \
 	mv /opt/hadoop/etc/hadoop/core-site.xml.tmp /opt/hadoop/etc/hadoop/core-site.xml
 	
-	sed "s/DATALAKE_NODE/${DATALAKE_NODE}/" /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf.template >> /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf.tmp && \
+	sed "s/DATALAKE_NODE/${DATALAKE_NODE}/" /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf >> /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf.tmp && \
 	mv /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf.tmp /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf
 fi
 
