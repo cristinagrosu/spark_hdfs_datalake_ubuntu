@@ -181,6 +181,13 @@ if [ "$SPARK_POSTGRES_PASSWORD" != "" ]; then
 	export PGPASSWORD=$SPARK_POSTGRES_PASSWORD
 
 	psql -h $POSTGRES_HOSTNAME -p $POSTGRES_PORT  -U  $SPARK_POSTGRES_USER -d $SPARK_POSTGRES_DB -f /opt/spark-2.1.0-bin-hadoop2.7/jars/hive-schema-1.2.0.postgres.sql
+
+	
+	hdfs dfs -mkdir /tmp
+	hdfs dfs -mkdir /tmp/hive 
+
+	#Check if there is no workaround this permissions
+	hdfs dfs -chmod -R 777 /tmp/hive
 fi
 
 cp /opt/hadoop/etc/hadoop/core-site.xml /opt/spark-2.1.0-bin-hadoop2.7/conf/
@@ -192,13 +199,6 @@ if [ "$NOTEBOOK_PASSWORD" != "" ]; then
     rm -rf /opt/password.py 
 fi 
 
-hdfs dfs -mkdir /tmp
-hdfs dfs -mkdir /tmp/hive 
-
-#Check if there is no workaround this permissions
-hdfs dfs -chmod -R 777 /tmp/hive
-
-hdfs dfs -mkdir /spark-warehouse
 
 if [ "$MODE" = "" ]; then
 MODE=$1
