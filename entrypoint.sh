@@ -82,8 +82,6 @@ if [ "$SPARK_MASTER_HOSTNAME" = "" ]; then
 fi
 if [ "$SPARK_CONTAINER_DIR" != "" ]; then
     
-    wget https://github.com/bigstepinc/datalake-client-libraries/releases/download/untagged-f557695f573fa1823db2/datalake-client-libraries-1.5-SNAPSHOT.jar -P /opt/spark-2.1.0-bin-hadoop2.7/jars/
-
     cp /opt/spark-2.1.0-bin-hadoop2.7/jars/datalake-client-libraries-1.5-SNAPSHOT.jar $HADOOP_HOME/share/hadoop/common/
     cp /root/google-collections-1.0.jar /opt/spark-2.1.0-bin-hadoop2.7/jars/
     
@@ -139,9 +137,6 @@ SPARK_MASTER_URL="spark://$SPARK_MASTER_HOSTNAME:$SPARK_MASTER_PORT"
 echo "Using SPARK_MASTER_URL=$SPARK_MASTER_URL"
 
 export SPARK_OPTS="--driver-java-options=-$JAVA_DRIVER_OPTS --driver-java-options=-Dlog4j.logLevel=info --master $SPARK_MASTER_URL --files /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml"
-
-# Get Spark Thrift Postgresql connector
-wget https://jdbc.postgresql.org/download/postgresql-9.4.1212.jar -P /opt/spark-2.1.0-bin-hadoop2.7/jars/
 
 if [ "$POSTGRES_HOSTNAME" != "" ]; then
 	sed "s/POSTGRES_HOSTNAME/$POSTGRES_HOSTNAME/" /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml >> /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml.tmp && \
