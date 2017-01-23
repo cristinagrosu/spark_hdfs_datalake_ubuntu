@@ -146,6 +146,15 @@ RUN apk add postgresql-client
 # Add Script for hashing password
 ADD password.py /opt
 
+# Download Bigstep Data Lake Client Libraries
+ wget https://github.com/bigstepinc/datalake-client-libraries/releases/download/untagged-f557695f573fa1823db2/datalake-client-libraries-1.5-SNAPSHOT.jar -P /opt/spark-2.1.0-bin-hadoop2.7/jars/
+
+# Get Spark Thrift Postgresql connector
+wget https://jdbc.postgresql.org/download/postgresql-9.4.1212.jar -P /opt/spark-2.1.0-bin-hadoop2.7/jars/
+
+# Get the right Toree Assembly Jar
+wget https://www.dropbox.com/s/sq6i8fb7uxju61g/toree-assembly-0.2.0.dev1-incubating-SNAPSHOT.jar?dl=1 -O /opt/toree-kernel/lib/toree-assembly-0.2.0.dev1-incubating-SNAPSHOT.jar
+
 #        SparkMaster  SparkMasterWebUI  SparkWorkerWebUI REST     Jupyter Spark		Thrift
 EXPOSE    7077        8080              8081              6066    8888      4040     88   10000
 
