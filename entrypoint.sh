@@ -194,6 +194,22 @@ if [ "$NOTEBOOK_PASSWORD" != "" ]; then
     rm -rf /opt/password.py 
 fi 
 
+if [ "$EX_MEM" != "" ]; then
+	sed "s/EX_MEM/$EX_MEM/" /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf >> /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf.tmp && \
+	mv /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf.tmp /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf
+fi
+if [ "$EX_CORES" != "" ]; then
+	sed "s/EX_CORES/$EX_CORES/" /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf >> /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf.tmp && \
+	mv /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf.tmp /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf
+fi
+if [ "$DRIVER_MEM" != "" ]; then
+	sed "s/DRIVER_MEM/$DRIVER_MEM/" /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf >> /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf.tmp && \
+	mv /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf.tmp /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf
+fi
+if [ "$DRIVER_CORES" != "" ]; then
+	sed "s/DRIVER_CORES/$DRIVER_CORES/" /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf >> /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf.tmp && \
+	mv /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf.tmp /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf
+fi
 
 if [ "$MODE" = "" ]; then
 MODE=$1
