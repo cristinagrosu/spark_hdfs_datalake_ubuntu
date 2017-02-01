@@ -22,6 +22,8 @@ export JAVA_OPTS="-Dsun.security.krb5.debug=true"
 
 rm -rf /opt/hadoop/etc/hadoop/core-site.xml
 
+cp /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf.template /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf
+
 if [ "$HDFS_MASTER" != "" ]; then
 	sed "s/HOSTNAME/$HDFS_MASTER/" /opt/hadoop/etc/hadoop/core-site.xml.template >> /opt/hadoop/etc/hadoop/core-site.xml
 else 
@@ -41,7 +43,7 @@ if [ "$USER_HOME_DIR" != "" ]; then
 	sed "s/USER_HOME_DIR/$USER_HOME_DIR/" /opt/hadoop/etc/hadoop/core-site.xml >> /opt/hadoop/etc/hadoop/core-site.xml.tmp && \
 	mv /opt/hadoop/etc/hadoop/core-site.xml.tmp /opt/hadoop/etc/hadoop/core-site.xml
 	
-	sed "s/USER_HOME_DIR/$USER_HOME_DIR/" /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf.template >> /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf.tmp && \
+	sed "s/USER_HOME_DIR/$USER_HOME_DIR/" /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf >> /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf.tmp && \
 	mv /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf.tmp /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf
 fi
 
