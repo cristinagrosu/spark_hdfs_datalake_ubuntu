@@ -155,6 +155,9 @@ RUN wget https://jdbc.postgresql.org/download/postgresql-9.4.1212.jar -P /opt/sp
 # Get the right Toree Assembly Jar
 RUN wget https://www.dropbox.com/s/sq6i8fb7uxju61g/toree-assembly-0.2.0.dev1-incubating-SNAPSHOT.jar?dl=1 -O /opt/toree-kernel/lib/toree-assembly-0.2.0.dev1-incubating-SNAPSHOT.jar
 
+#Overwrite the Spark daemon file
+ADD spark-daemon.sh /opt/spark-2.1.0-bin-hadoop2.7/sbin/spark-daemon.sh
+
 #        SparkMaster  SparkMasterWebUI  SparkWorkerWebUI REST     Jupyter Spark		Thrift
 EXPOSE    7077        8080              8081              6066    8888      4040     88   10000
 
