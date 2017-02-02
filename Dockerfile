@@ -18,6 +18,10 @@ RUN mv spark-2.1.0-bin-hadoop2.7 /opt/ && mkdir -p /user && mkdir -p /user/noteb
 
 ADD entrypoint.sh /
 ADD core-site.xml.datalake /opt/spark-2.1.0-bin-hadoop2.7/conf/
+ADD core-site.xml.datalake.integration /opt/spark-2.1.0-bin-hadoop2.7/conf/
+
+ADD krb5.conf.integration /etc/
+
 RUN chmod 777 /entrypoint.sh
 ADD spark-defaults.conf /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf.template
 
