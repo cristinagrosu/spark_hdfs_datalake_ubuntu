@@ -28,15 +28,26 @@ if [ "$HDFS_MASTER" != "" ]; then
 	sed "s/HOSTNAME/$HDFS_MASTER/" /opt/hadoop/etc/hadoop/core-site.xml.template >> /opt/hadoop/etc/hadoop/core-site.xml
 else 
 	mv /opt/spark-2.1.0-bin-hadoop2.7/conf/core-site.xml.datalake /opt/hadoop/etc/hadoop/core-site.xml
+
+	
+	if [ "$DEV" == "integration" ]; then 
+		cp /etc/krb5.conf.integration /etc/krb5.conf
+		mv /opt/spark-2.1.0-bin-hadoop2.7/conf/core-site.xml.datalake.integration /opt/hadoop/etc/hadoop/core-site.xml
+		
+	fi
 fi
 
 if [ "$DATALAKE_USER" != "" ]; then
 	sed "s/DATALAKE_USER/$DATALAKE_USER/" /opt/hadoop/etc/hadoop/core-site.xml >> /opt/hadoop/etc/hadoop/core-site.xml.tmp && \
 	mv /opt/hadoop/etc/hadoop/core-site.xml.tmp /opt/hadoop/etc/hadoop/core-site.xml
+	
+	cp /opt/hadoop/etc/hadoop/core-site.xml /opt/spark-2.1.0-bin-hadoop2.7/conf/core-site.xml
 fi
 if [ "$KEYTAB_PATH" != "" ]; then
 	sed "s/KEYTAB_PATH/${KEYTAB_PATH}/" /opt/hadoop/etc/hadoop/core-site.xml >> /opt/hadoop/etc/hadoop/core-site.xml.tmp && \
 	mv /opt/hadoop/etc/hadoop/core-site.xml.tmp /opt/hadoop/etc/hadoop/core-site.xml
+	
+	cp /opt/hadoop/etc/hadoop/core-site.xml /opt/spark-2.1.0-bin-hadoop2.7/conf/core-site.xml
 fi
 if [ "$USER_HOME_DIR" != "" ]; then
 	mkdir -p $USER_HOME_DIR
@@ -45,6 +56,8 @@ if [ "$USER_HOME_DIR" != "" ]; then
 	
 	sed "s/USER_HOME_DIR/$USER_HOME_DIR/" /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf >> /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf.tmp && \
 	mv /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf.tmp /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf
+	
+	cp /opt/hadoop/etc/hadoop/core-site.xml /opt/spark-2.1.0-bin-hadoop2.7/conf/core-site.xml
 fi
 
 if [ "$DATALAKE_NODE" != "" ]; then
@@ -53,9 +66,10 @@ if [ "$DATALAKE_NODE" != "" ]; then
 	
 	sed "s/DATALAKE_NODE/${DATALAKE_NODE}/" /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf >> /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf.tmp && \
 	mv /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf.tmp /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf
+	
+	cp /opt/hadoop/etc/hadoop/core-site.xml /opt/spark-2.1.0-bin-hadoop2.7/conf/core-site.xml
 fi
 
-cp /opt/spark-2.1.0-bin-hadoop2.7/conf/core-site.xml /opt/hadoop/etc/hadoop/core-site.xml
 
 if [ "$SPARK_MASTER_PORT" = "" ]; then
   SPARK_MASTER_PORT=7077
@@ -189,7 +203,6 @@ if [ "$SPARK_POSTGRES_PASSWORD" != "" ]; then
 	hdfs dfs -chmod -R 777 /tmp/hive
 fi
 
-cp /opt/hadoop/etc/hadoop/core-site.xml /opt/spark-2.1.0-bin-hadoop2.7/conf/
 
 if [ "$NOTEBOOK_PASSWORD" != "" ]; then
     pass=$(python /opt/password.py  $NOTEBOOK_PASSWORD)
