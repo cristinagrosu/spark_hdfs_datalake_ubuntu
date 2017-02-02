@@ -55,6 +55,8 @@ if [ "$DATALAKE_NODE" != "" ]; then
 	mv /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf.tmp /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf
 fi
 
+cp /opt/spark-2.1.0-bin-hadoop2.7/conf/core-site.xml /opt/hadoop/etc/hadoop/core-site.xml
+
 if [ "$SPARK_MASTER_PORT" = "" ]; then
   SPARK_MASTER_PORT=7077
 fi
