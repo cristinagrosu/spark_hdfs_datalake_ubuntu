@@ -61,6 +61,8 @@ if [ "$USER_HOME_DIR" != "" ]; then
 fi
 
 if [ "$DATALAKE_NODE" != "" ]; then
+	echo "spark.sql.warehouse.dir=dl://DATALAKE_NODE:14000/data_lake/USER_HOME_DIR" >> /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf
+
 	sed "s/DATALAKE_NODE/${DATALAKE_NODE}/" /opt/hadoop/etc/hadoop/core-site.xml >> /opt/hadoop/etc/hadoop/core-site.xml.tmp && \
 	mv /opt/hadoop/etc/hadoop/core-site.xml.tmp /opt/hadoop/etc/hadoop/core-site.xml
 	
@@ -68,8 +70,12 @@ if [ "$DATALAKE_NODE" != "" ]; then
 	mv /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf.tmp /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf
 	
 	cp /opt/hadoop/etc/hadoop/core-site.xml /opt/spark-2.1.0-bin-hadoop2.7/conf/core-site.xml
+
 fi
 
+if [ "$SPARK_WAREHOUSE_DIR" != "" ]; then
+	echo "spark.sql.warehouse.dir=$SPARK_WAREHOUSE_DIR" >> /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf
+fi
 
 if [ "$SPARK_MASTER_PORT" = "" ]; then
   SPARK_MASTER_PORT=7077
