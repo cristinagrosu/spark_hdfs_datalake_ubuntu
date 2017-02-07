@@ -74,6 +74,7 @@ if [ "$DATALAKE_NODE" != "" ]; then
 fi
 
 if [ "$SPARK_WAREHOUSE_DIR" != "" ]; then
+	rm /opt/spark-2.1.0-bin-hadoop2.7/conf/core-site.xml
 	echo "spark.sql.warehouse.dir=$SPARK_WAREHOUSE_DIR" >> /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf
 fi
 
