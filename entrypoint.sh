@@ -77,31 +77,31 @@ if [ "$SPARK_WAREHOUSE_DIR" != "" ]; then
 	echo "spark.sql.warehouse.dir=$SPARK_WAREHOUSE_DIR" >> /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf
 fi
 
-if [ "$SPARK_MASTER_PORT" = "" ]; then
+if [ "$SPARK_MASTER_PORT" == "" ]; then
   SPARK_MASTER_PORT=7077
 fi
-if [ "$SPARK_MASTER_IP" = "" ]; then
+if [ "$SPARK_MASTER_IP" == "" ]; then
   SPARK_MASTER_IP="0.0.0.0"
 fi
-if [ "$SPARK_MASTER_WEBUI_PORT" = "" ]; then
+if [ "$SPARK_MASTER_WEBUI_PORT" == "" ]; then
   SPARK_MASTER_WEBUI_PORT=8080
 fi
-if [ "$SPARK_WORKER_WEBUI_PORT" = "" ]; then
+if [ "$SPARK_WORKER_WEBUI_PORT" == "" ]; then
   SPARK_WORKER_WEBUI_PORT=8081
 fi
-if [ "$SPARK_UI_PORT" = "" ]; then
+if [ "$SPARK_UI_PORT" == "" ]; then
   SPARK_UI_PORT=4040
 fi
-if [ "$SPARK_WORKER_PORT" = "" ]; then
+if [ "$SPARK_WORKER_PORT" == "" ]; then
   SPARK_WORKER_PORT=8581
 fi
-if [ "$CORES" = "" ]; then
+if [ "$CORES" == "" ]; then
   CORES=1
 fi
-if [ "$MEM" = "" ]; then
+if [ "$MEM" == "" ]; then
   MEM=1g
 fi
-if [ "$SPARK_MASTER_HOSTNAME" = "" ]; then
+if [ "$SPARK_MASTER_HOSTNAME" == "" ]; then
   SPARK_MASTER_HOSTNAME=`hostname -f`
 fi
 if [ "$SPARK_CONTAINER_DIR" != "" ]; then
@@ -236,7 +236,7 @@ if [ "$DRIVER_CORES" != "" ]; then
 	mv /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf.tmp /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf
 fi
 
-if [ "$MODE" = "" ]; then
+if [ "$MODE" == "" ]; then
 MODE=$1
 fi
 
