@@ -157,6 +157,12 @@ RUN wget https://github.com/bigstepinc/datalake-client-libraries/releases/downlo
 # Get Spark Thrift Postgresql connector
 RUN wget https://jdbc.postgresql.org/download/postgresql-9.4.1212.jar -P /opt/spark-2.1.0-bin-hadoop2.7/jars/
 
+#Get Kafka Streaming connector
+RUN wget http://central.maven.org/maven2/org/apache/spark/spark-streaming-kafka-0-10_2.10/2.1.0/spark-streaming-kafka-0-10_2.10-2.1.0.jar -P /opt/spark-2.1.0-bin-hadoop2.7/jars/
+
+#Get Kafka Structured Streaming connector
+RUN wget http://central.maven.org/maven2/org/apache/spark/spark-sql-kafka-0-10_2.10/2.1.0/spark-sql-kafka-0-10_2.10-2.1.0.jar -P /opt/spark-2.1.0-bin-hadoop2.7/jars/
+
 # Get the right Toree Assembly Jar
 RUN wget https://www.dropbox.com/s/sq6i8fb7uxju61g/toree-assembly-0.2.0.dev1-incubating-SNAPSHOT.jar?dl=1 -O /opt/toree-kernel/lib/toree-assembly-0.2.0.dev1-incubating-SNAPSHOT.jar
 
