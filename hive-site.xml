@@ -19,4 +19,23 @@
       <name>datanucleus.autoCreateSchema</name>     
       <value>false</value>
   </property>
+  
+  <!-- Attempt to avoid RPC error -->
+  
+  <property>
+      <name>hive.exec.dynamic.partition</name>
+      <value>DYNAMIC_PARTITION</value>
+  </property>
+  <property>
+      <name>hive.exec.dynamic.partition.mode</name>
+      <value>DYNAMIC_PARTITION_MODE</value>
+  </property>
+  <property>
+      <name>hive.exec.max.dynamic.partitions</name>
+      <value>MAX_DYNAMIC_PARTITIONS</value>
+  </property>
+  <property>
+      <name>hive.exec.max.dynamic.partitions.pernode</name>
+      <value>MAX_DYNAMIC_PARTITIONS_PER_NODE</value>
+  </property>
 </configuration>
