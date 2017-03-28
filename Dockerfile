@@ -166,6 +166,9 @@ RUN wget http://central.maven.org/maven2/org/apache/spark/spark-sql-kafka-0-10_2
 # Get the right Toree Assembly Jar
 RUN wget https://www.dropbox.com/s/sq6i8fb7uxju61g/toree-assembly-0.2.0.dev1-incubating-SNAPSHOT.jar?dl=1 -O /opt/toree-kernel/lib/toree-assembly-0.2.0.dev1-incubating-SNAPSHOT.jar
 
+# Get the examples jar in default location
+RUN cp /opt/spark-2.1.0-bin-hadoop2.7/examples/jars/spark-examples_2.11-2.1.0.jar /opt/spark-2.1.0-bin-hadoop2.7/jars/spark-examples_2.11-2.1.0.jar
+
 #Overwrite the Spark daemon file
 ADD spark-daemon.sh /opt/spark-2.1.0-bin-hadoop2.7/sbin/spark-daemon.sh
 
