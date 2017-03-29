@@ -118,14 +118,14 @@ fi
 if [ "$SPARK_RPC_NUM_RETRIES" == "" ]; then
   SPARK_RPC_NUM_RETRIES=3
 fi
-if [ "$DYNAMIC_PARTITION" == "" ]; then
-  DYNAMIC_PARTITION=`true`
+if [ "$DYNAMIC_PARTITION_VALUE" == "" ]; then
+  DYNAMIC_PARTITION_VALUE=`true`
 fi
 if [ "$DYNAMIC_PARTITION_MODE" == "" ]; then
   DYNAMIC_PARTITION_MODE=`nonstrict`
 fi
-if [ "$MAX_DYNAMIC_PARTITIONS" == "" ]; then
-  MAX_DYNAMIC_PARTITIONS=1000
+if [ "$NR_MAX_DYNAMIC_PARTITIONS" == "" ]; then
+  NR_MAX_DYNAMIC_PARTITIONS=1000
 fi
 if [ "$MAX_DYNAMIC_PARTITIONS_PER_NODE" == "" ]; then
   MAX_DYNAMIC_PARTITIONS_PER_NODE=100
@@ -211,8 +211,8 @@ if [ "$SPARK_POSTGRES_USER" != "" ]; then
 	mv /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml.tmp /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml
 fi
 
-if [ "$DYNAMIC_PARTITION" != "" ]; then
-	sed "s/DYNAMIC_PARTITION/$DYNAMIC_PARTITION/" /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml >> /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml.tmp && \
+if [ "$DYNAMIC_PARTITION_VALUE" != "" ]; then
+	sed "s/DYNAMIC_PARTITION_VALUE/$DYNAMIC_PARTITION_VALUE/" /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml >> /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml.tmp && \
 	mv /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml.tmp /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml
 fi
 
@@ -221,8 +221,8 @@ if [ "$DYNAMIC_PARTITION_MODE" != "" ]; then
 	mv /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml.tmp /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml
 fi
 
-if [ "$MAX_DYNAMIC_PARTITIONS" != "" ]; then
-	sed "s/MAX_DYNAMIC_PARTITIONS/$MAX_DYNAMIC_PARTITIONS/" /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml >> /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml.tmp && \
+if [ "$NR_MAX_DYNAMIC_PARTITIONS" != "" ]; then
+	sed "s/NR_MAX_DYNAMIC_PARTITIONS/$NR_MAX_DYNAMIC_PARTITIONS/" /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml >> /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml.tmp && \
 	mv /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml.tmp /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml
 fi
 
