@@ -120,9 +120,9 @@ RUN mv $CONDA_DIR/pkgs/readline-6.2-2/lib/libreadline.so.6 $CONDA_DIR/pkgs/readl
     ln -s /usr/lib/libreadline.so.6 $CONDA_DIR/pkgs/readline-6.2-2/lib/libreadline.so.6
     
 #Add Getting Started Notebooks
-RUN wget https://www.dropbox.com/s/gfz7225ug0e6vwo/DataLab%20Getting%20Started%20in%20Scala.ipynb?dl=1 -O /user/notebooks/DataLab\ Getting\ Started\ in\ Scala.ipynb
-RUN wget https://www.dropbox.com/s/rgriprne2r8hin7/DataLab%20Getting%20Started%20in%20R.ipynb?dl=1 -O /user/notebooks/DataLab\ Getting\ Started\ in\ R.ipynb
-RUN wget https://www.dropbox.com/s/ih0xie29djlgzzo/DataLab%20Getting%20Started%20in%20Python.ipynb?dl=1 -O /user/notebooks/DataLab\ Getting\ Started\ in\ Python.ipynb
+RUN wget http://repo.bigstepcloud.com/bigstep/datalab/DataLab%20Getting%20Started%20in%20Scala.ipynb -O /user/notebooks/DataLab\ Getting\ Started\ in\ Scala.ipynb
+RUN wget http://repo.bigstepcloud.com/bigstep/datalab/DataLab%20Getting%20Started%20in%20R.ipynb -O /user/notebooks/DataLab\ Getting\ Started\ in\ R.ipynb
+RUN wget http://repo.bigstepcloud.com/bigstep/datalab/DataLab%20Getting%20Started%20in%20Python.ipynb -O /user/notebooks/DataLab\ Getting\ Started\ in\ Python.ipynb
 
 #Add cairo-dev for R notebook
 RUN apk add cairo-dev
@@ -131,7 +131,7 @@ RUN apk add cairo-dev
 ADD hive-site.xml /opt/spark-2.1.0-bin-hadoop2.7/conf/
 
 # Change Jupyter Logo
-RUN wget https://www.dropbox.com/s/ehlqagl5t0ed60h/logo.png?dl=1 -O logo.png
+RUN wget http://repo.bigstepcloud.com/bigstep/datalab/logo.png -O logo.png
 
 RUN cp logo.png $CONDA_DIR/envs/python3/doc/global/template/images/logo.png && \
     cp logo.png $CONDA_DIR/envs/python3/lib/python3.5/site-packages/notebook/static/base/images/logo.png && \
@@ -142,9 +142,9 @@ RUN cp logo.png $CONDA_DIR/envs/python3/doc/global/template/images/logo.png && \
     cp logo.png $CONDA_DIR/doc/global/template/images/logo.png && \
     rm -rf logo.png
     
-RUN wget https://www.dropbox.com/s/rcmulncpdqmv7l7/hive-schema-1.2.0.postgres.sql?dl=1 -O /opt/spark-2.1.0-bin-hadoop2.7/jars/hive-schema-1.2.0.postgres.sql && \
-    wget https://www.dropbox.com/s/r1uutdfe1pn9vci/hive-txn-schema-0.13.0.postgres.sql?dl=1 -O /opt/spark-2.1.0-bin-hadoop2.7/jars/hive-txn-schema-0.13.0.postgres.sql && \
-    wget https://www.dropbox.com/s/7utv1k27tz2t6l4/hive-txn-schema-0.14.0.postgres.sql?dl=1 -O /opt/spark-2.1.0-bin-hadoop2.7/jars/hive-txn-schema-0.14.0.postgres.sql
+RUN wget http://repo.bigstepcloud.com/bigstep/datalab/hive-schema-1.2.0.postgres.sql -O /opt/spark-2.1.0-bin-hadoop2.7/jars/hive-schema-1.2.0.postgres.sql && \
+    wget http://repo.bigstepcloud.com/bigstep/datalab/hive-txn-schema-0.13.0.postgres.sql -O /opt/spark-2.1.0-bin-hadoop2.7/jars/hive-txn-schema-0.13.0.postgres.sql && \
+    wget http://repo.bigstepcloud.com/bigstep/datalab/hive-txn-schema-0.14.0.postgres.sql -O /opt/spark-2.1.0-bin-hadoop2.7/jars/hive-txn-schema-0.14.0.postgres.sql
 
 RUN apk add postgresql-client
 
@@ -164,7 +164,7 @@ RUN wget http://central.maven.org/maven2/org/apache/spark/spark-streaming-kafka-
 RUN wget http://central.maven.org/maven2/org/apache/spark/spark-sql-kafka-0-10_2.10/2.1.0/spark-sql-kafka-0-10_2.10-2.1.0.jar -P /opt/spark-2.1.0-bin-hadoop2.7/jars/
 
 # Get the right Toree Assembly Jar
-RUN wget https://www.dropbox.com/s/sq6i8fb7uxju61g/toree-assembly-0.2.0.dev1-incubating-SNAPSHOT.jar?dl=1 -O /opt/toree-kernel/lib/toree-assembly-0.2.0.dev1-incubating-SNAPSHOT.jar
+RUN wget http://repo.bigstepcloud.com/bigstep/datalab/toree-assembly-0.2.0.dev1-incubating-SNAPSHOT.jar -O /opt/toree-kernel/lib/toree-assembly-0.2.0.dev1-incubating-SNAPSHOT.jar
 
 # Get the examples jar in default location
 RUN cp /opt/spark-2.1.0-bin-hadoop2.7/examples/jars/spark-examples_2.11-2.1.0.jar /opt/spark-2.1.0-bin-hadoop2.7/jars/spark-examples_2.11-2.1.0.jar
