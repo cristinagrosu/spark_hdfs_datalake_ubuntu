@@ -108,6 +108,29 @@ fi
 if [ "$SPARK_MASTER_HOSTNAME" == "" ]; then
   SPARK_MASTER_HOSTNAME=`hostname -f`
 fi
+# Setting defaults for spark and Hive parameters -> RPC error
+if [ "$SPARK_NETWORK_TIMEOUT" == "" ]; then
+  SPARK_NETWORK_TIMEOUT=120
+fi
+if [ "$SPARK_RPC_TIMEOUT" == "" ]; then
+  SPARK_RPC_TIMEOUT=120
+fi
+if [ "$SPARK_RPC_NUM_RETRIES" == "" ]; then
+  SPARK_RPC_NUM_RETRIES=3
+fi
+if [ "$DYNAMIC_PARTITION" == "" ]; then
+  DYNAMIC_PARTITION=`true`
+fi
+if [ "$DYNAMIC_PARTITION_MODE" == "" ]; then
+  DYNAMIC_PARTITION_MODE=`nonstrict`
+fi
+if [ "$MAX_DYNAMIC_PARTITIONS" == "" ]; then
+  MAX_DYNAMIC_PARTITIONS=1000
+fi
+if [ "$MAX_DYNAMIC_PARTITIONS_PER_NODE" == "" ]; then
+  MAX_DYNAMIC_PARTITIONS_PER_NODE=100
+fi
+
 if [ "$SPARK_CONTAINER_DIR" != "" ]; then
     
     cp /opt/spark-2.1.0-bin-hadoop2.7/jars/datalake-client-libraries-1.5-SNAPSHOT.jar $HADOOP_HOME/share/hadoop/common/
@@ -188,6 +211,26 @@ if [ "$SPARK_POSTGRES_USER" != "" ]; then
 	mv /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml.tmp /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml
 fi
 
+if [ "$DYNAMIC_PARTITION" != "" ]; then
+	sed "s/DYNAMIC_PARTITION/$DYNAMIC_PARTITION/" /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml >> /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml.tmp && \
+	mv /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml.tmp /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml
+fi
+
+if [ "$DYNAMIC_PARTITION_MODE" != "" ]; then
+	sed "s/DYNAMIC_PARTITION_MODE/$DYNAMIC_PARTITION_MODE/" /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml >> /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml.tmp && \
+	mv /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml.tmp /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml
+fi
+
+if [ "$MAX_DYNAMIC_PARTITIONS" != "" ]; then
+	sed "s/MAX_DYNAMIC_PARTITIONS/$MAX_DYNAMIC_PARTITIONS/" /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml >> /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml.tmp && \
+	mv /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml.tmp /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml
+fi
+
+if [ "$MAX_DYNAMIC_PARTITIONS_PER_NODE" != "" ]; then
+	sed "s/MAX_DYNAMIC_PARTITIONS_PER_NODE/$MAX_DYNAMIC_PARTITIONS_PER_NODE/" /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml >> /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml.tmp && \
+	mv /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml.tmp /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml
+fi
+
 if [ "$SPARK_POSTGRES_PASSWORD" != "" ]; then
 	sed "s/SPARK_POSTGRES_PASSWORD/$SPARK_POSTGRES_PASSWORD/" /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml >> /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml.tmp && \
 	mv /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml.tmp /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml
@@ -237,6 +280,20 @@ if [ "$DRIVER_MEM" != "" ]; then
 fi
 if [ "$DRIVER_CORES" != "" ]; then
 	sed "s/DRIVER_CORES/$DRIVER_CORES/" /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf >> /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf.tmp && \
+	mv /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf.tmp /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf
+fi
+
+if [ "$SPARK_NETWORK_TIMEOUT" != "" ]; then
+	sed "s/SPARK_NETWORK_TIMEOUT/$SPARK_NETWORK_TIMEOUT/" /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf >> /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf.tmp && \
+	mv /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf.tmp /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf
+fi
+if [ "$SPARK_RPC_TIMEOUT" != "" ]; then
+	sed "s/SPARK_RPC_TIMEOUT/$SPARK_RPC_TIMEOUT/" /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf >> /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf.tmp && \
+	mv /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf.tmp /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf
+fi
+
+if [ "$SPARK_RPC_NUM_RETRIES" != "" ]; then
+	sed "s/SPARK_RPC_NUM_RETRIES/$SPARK_RPC_NUM_RETRIES/" /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf >> /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf.tmp && \
 	mv /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf.tmp /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf
 fi
 
