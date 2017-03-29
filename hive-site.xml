@@ -24,7 +24,7 @@
   
   <property>
       <name>hive.exec.dynamic.partition</name>
-      <value>DYNAMIC_PARTITION</value>
+      <value>DYNAMIC_PARTITION_VALUE</value>
   </property>
   <property>
       <name>hive.exec.dynamic.partition.mode</name>
@@ -32,7 +32,7 @@
   </property>
   <property>
       <name>hive.exec.max.dynamic.partitions</name>
-      <value>MAX_DYNAMIC_PARTITIONS</value>
+      <value>NR_MAX_DYNAMIC_PARTITIONS</value>
   </property>
   <property>
       <name>hive.exec.max.dynamic.partitions.pernode</name>
