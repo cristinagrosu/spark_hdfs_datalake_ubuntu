@@ -146,7 +146,9 @@ if [ "$SPARK_CONTAINER_DIR" != "" ]; then
     cp $SPARK_CONTAINER_DIR/user.keytab $KEYTAB_PATH_URI
 fi 
 
-sed "s/SPARK_MASTER_URL/$SPARK_MASTER_URL/" /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf >> /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf.tmp && \
+SPARK_MASTER_URL_ESCAPED=$(echo "${SPARK_MASTER_URL}" | sed 's/\//\\\//g')
+
+sed "s/SPARK_MASTER_URL/$SPARK_MASTER_URL_ESCAPED/" /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf >> /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf.tmp && \
 mv /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf.tmp /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf
 
 sed "s/SPARK_UI_PORT/$SPARK_UI_PORT/" /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf >> /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf.tmp && \
