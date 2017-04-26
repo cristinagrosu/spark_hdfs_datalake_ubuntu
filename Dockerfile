@@ -1,8 +1,4 @@
-FROM mcristinagrosu/bigstep_hdfs_datalake
-
-RUN apk add --update alpine-sdk
-RUN apk add libffi && apk add jq
-
+FROM mcristinagrosu/bigstep_hdfs_datalake_ubuntu
 
 # Install Spark 2.1.0
 RUN cd /opt && wget http://d3kbcqa49mib13.cloudfront.net/spark-2.1.0-bin-hadoop2.7.tgz
@@ -14,7 +10,8 @@ ENV SPARK_HOME /opt/spark-2.1.0-bin-hadoop2.7
 ENV R_LIBS_USER $SPARK_HOME/R/lib:/opt/conda/envs/ir/lib/R/library:/opt/conda/lib/R/library
 ENV PYTHONPATH $SPARK_HOME/python:$SPARK_HOME/python/lib/py4j-0.8.2.1-src.zip
 
-RUN mv spark-2.1.0-bin-hadoop2.7 /opt/ && mkdir -p /user && mkdir -p /user/notebooks && mkdir -p /user/datasets
+#RUN mv spark-2.1.0-bin-hadoop2.7 /opt/ && 
+RUN mkdir -p /user && mkdir -p /user/notebooks && mkdir -p /user/datasets
 
 ADD entrypoint.sh /
 ADD core-site.xml.datalake /opt/spark-2.1.0-bin-hadoop2.7/conf/
@@ -34,10 +31,6 @@ ENV PATH $CONDA_DIR/bin:$PATH
 ENV PATH $PATH:/$SPARK_HOME/bin/
 
 RUN cd /opt && \
-    #wget https://repo.continuum.io/miniconda/Miniconda2-4.1.11-Linux-x86_64.sh && \
-    # /bin/bash Miniconda2-4.1.11-Linux-x86_64.sh -b -p $CONDA_DIR && \
-    # rm -rf Miniconda2-4.1.11-Linux-x86_64.sh 
-
     wget https://repo.continuum.io/miniconda/Miniconda2-4.2.12-Linux-x86_64.sh && \ 
     /bin/bash Miniconda2-4.2.12-Linux-x86_64.sh  -b -p $CONDA_DIR && \
      rm -rf  Miniconda2-4.2.12-Linux-x86_64.sh
@@ -49,7 +42,7 @@ RUN $CONDA_DIR/bin/conda install --yes \
     'notebook' && \
     $CONDA_DIR/bin/conda clean -yt
     
-RUN $CONDA_DIR/bin/jupyter notebook  --generate-config
+RUN $CONDA_DIR/bin/jupyter notebook  --generate-config --allow-root
 
 RUN $CONDA_DIR/bin/conda install --yes nb_conda
 RUN $CONDA_DIR/bin/python -m nb_conda_kernels.install --disable --prefix=$CONDA_DIR && \
@@ -81,7 +74,7 @@ RUN cd /tmp && \
     rm -rf /tmp/incubator-toree 
     
 #Install Python3 packages
-RUN $CONDA_DIR/bin/conda install --yes \
+RUN cd /root && $CONDA_DIR/bin/conda install --yes \
     'ipywidgets' \
     'pandas' \
     'matplotlib' \
@@ -92,12 +85,15 @@ RUN $CONDA_DIR/bin/conda install --yes \
     
 RUN $CONDA_DIR/bin/conda config --set auto_update_conda False
 
-RUN CONDA_VERBOSE=3 $CONDA_DIR/bin/conda create --yes -p /opt/conda/envs/python3 python=3.5 ipython ipywidgets pandas matplotlib scipy seaborn scikit-learn
-RUN bash -c '. activate python3 && \
+RUN CONDA_VERBOSE=3 $CONDA_DIR/bin/conda create --yes -p $CONDA_DIR/envs/python3 python=3.5 ipython ipywidgets pandas matplotlib scipy seaborn scikit-learn
+RUN bash -c '. activate $CONDA_DIR/envs/python3 && \
     python -m ipykernel.kernelspec --prefix=/opt/conda && \
     . deactivate'
-RUN jq --arg v "$CONDA_DIR/envs/python3/bin/python"         '.["env"]["PYSPARK_PYTHON"]=$v' /opt/conda/share/jupyter/kernels/python3/kernel.json > /tmp/kernel.json && \
-     mv /tmp/kernel.json /opt/conda/share/jupyter/kernels/python3/kernel.json 
+    
+RUN wget https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64
+RUN chmod +x /root/jq-linux64
+RUN /root/jq-linux64 --arg v "$CONDA_DIR/envs/python3/bin/python"         '.["env"]["PYSPARK_PYTHON"]=$v' /opt/conda/share/jupyter/kernels/python3/kernel.json > /tmp/kernel.json &&   \
+    mv /tmp/kernel.json /opt/conda/share/jupyter/kernels/python3/kernel.json
 
 #Install R kernel and set up environment
 RUN $CONDA_DIR/bin/conda config --add channels r
@@ -110,14 +106,15 @@ COPY kernel.json /opt/conda/share/jupyter/kernels/scala/
 RUN cd /root && wget http://central.maven.org/maven2/com/google/collections/google-collections/1.0/google-collections-1.0.jar
 
 #Solution to readline library issues for SparkR context/session
-RUN mv $CONDA_DIR/envs/python3/lib/libreadline.so.6 /opt/conda/envs/python3/lib/libreadline.so.6.tmp && \
-    ln -s /usr/lib/libreadline.so.6 $CONDA_DIR/envs/python3/lib/libreadline.so.6
-RUN mv $CONDA_DIR/envs/ir/lib/libreadline.so.6  $CONDA_DIR/envs/ir/lib/libreadline.so.6.tmp && \
-    ln -s /usr/lib/libreadline.so.6 $CONDA_DIR/envs/ir/lib/libreadline.so.6
-RUN mv $CONDA_DIR/lib/libreadline.so.6 $CONDA_DIR/lib/libreadline.so.6.tmp && \
-    ln -s /usr/lib/libreadline.so.6 $CONDA_DIR/lib/libreadline.so.6
-RUN mv $CONDA_DIR/pkgs/readline-6.2-2/lib/libreadline.so.6 $CONDA_DIR/pkgs/readline-6.2-2/lib/libreadline.so.6.tmp && \
-    ln -s /usr/lib/libreadline.so.6 $CONDA_DIR/pkgs/readline-6.2-2/lib/libreadline.so.6
+#These are commented -> TO be enabled if there are problems initializing the sparkr session
+#RUN mv $CONDA_DIR/envs/python3/lib/libreadline.so.6 $CONDA_DIR/envs/python3/lib/libreadline.so.6.tmp && \
+#    ln -s /lib/x86_64-linux-gnu/libreadline.so.6 $CONDA_DIR/envs/python3/lib/libreadline.so.6
+#RUN mv $CONDA_DIR/envs/ir/lib/libreadline.so.6 $CONDA_DIR/envs/ir/lib/libreadline.so.6.tmp && \
+#    ln -s /lib/x86_64-linux-gnu/libreadline.so.6 $CONDA_DIR/envs/ir/lib/libreadline.so.6
+#RUN mv $CONDA_DIR/lib/libreadline.so.6 $CONDA_DIR/lib/libreadline.so.6.tmp && \
+#    ln -s /lib/x86_64-linux-gnu/libreadline.so.6 $CONDA_DIR/lib/libreadline.so.6
+#RUN mv $CONDA_DIR/pkgs/readline-6.2-2/lib/libreadline.so.6 $CONDA_DIR/pkgs/readline-6.2-2/lib/libreadline.so.6.tmp && \
+#    ln -s /lib/x86_64-linux-gnu/libreadline.so.6 $CONDA_DIR/pkgs/readline-6.2-2/lib/libreadline.so.6
     
 #Add Getting Started Notebooks
 RUN wget http://repo.bigstepcloud.com/bigstep/datalab/DataLab%20Getting%20Started%20in%20Scala.ipynb -O /user/notebooks/DataLab\ Getting\ Started\ in\ Scala.ipynb
@@ -125,7 +122,8 @@ RUN wget http://repo.bigstepcloud.com/bigstep/datalab/DataLab%20Getting%20Starte
 RUN wget http://repo.bigstepcloud.com/bigstep/datalab/DataLab%20Getting%20Started%20in%20Python.ipynb -O /user/notebooks/DataLab\ Getting\ Started\ in\ Python.ipynb
 
 #Add cairo-dev for R notebook
-RUN apk add cairo-dev
+RUN apt-get update -y
+RUN apt-get install -y libcairo2-dev python-cairo-dev python3-cairo-dev
 
 # Add hive-site.xml conf for metastore configuration
 ADD hive-site.xml /opt/spark-2.1.0-bin-hadoop2.7/conf/
@@ -136,9 +134,6 @@ RUN wget http://repo.bigstepcloud.com/bigstep/datalab/logo.png -O logo.png
 RUN cp logo.png $CONDA_DIR/envs/python3/doc/global/template/images/logo.png && \
     cp logo.png $CONDA_DIR/envs/python3/lib/python3.5/site-packages/notebook/static/base/images/logo.png && \
     cp logo.png $CONDA_DIR/lib/python2.7/site-packages/notebook/static/base/images/logo.png && \
-    #cp logo.png $CONDA_DIR/pkgs/notebook-4.2.3-py27_0/lib/python2.7/site-packages/notebook/static/base/images/logo.png && \
-    #cp logo.png $CONDA_DIR/pkgs/qt-5.6.0-0/doc/global/template/images/logo.png && \
-    #cp logo.png $CONDA_DIR/pkgs/notebook-4.2.3-py35_0/lib/python3.5/site-packages/notebook/static/base/images/logo.png && \
     cp logo.png $CONDA_DIR/doc/global/template/images/logo.png && \
     rm -rf logo.png
     
@@ -146,7 +141,10 @@ RUN wget http://repo.bigstepcloud.com/bigstep/datalab/hive-schema-1.2.0.postgres
     wget http://repo.bigstepcloud.com/bigstep/datalab/hive-txn-schema-0.13.0.postgres.sql -O /opt/spark-2.1.0-bin-hadoop2.7/jars/hive-txn-schema-0.13.0.postgres.sql && \
     wget http://repo.bigstepcloud.com/bigstep/datalab/hive-txn-schema-0.14.0.postgres.sql -O /opt/spark-2.1.0-bin-hadoop2.7/jars/hive-txn-schema-0.14.0.postgres.sql
 
-RUN apk add postgresql-client
+RUN add-apt-repository "deb http://apt.postgresql.org/pub/repos/apt/ trusty-pgdg main" && \
+    wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add - 
+RUN apt-get update -y
+RUN apt-get install -y postgresql-client
 
 # Add Script for hashing password
 ADD password.py /opt
