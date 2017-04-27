@@ -54,6 +54,6 @@
 
 <property>
  <name>fs.dl.impl.transportScheme</name>
-<value>http</value>
+<value>https</value>
 </property
 </configuration>
