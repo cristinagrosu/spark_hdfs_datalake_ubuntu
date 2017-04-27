@@ -8,8 +8,8 @@ echo Using SPARK_HOME=$SPARK_HOME
 
 . "${SPARK_HOME}/bin/load-spark-env.sh"
 
-export JAVA_HOME="/opt/jdk"                                                                                                                               
-export PATH="$PATH:/opt/jdk/bin:/opt/jdk/jre/bin:/opt/hadoop/bin/:/opt/hadoop/sbin/"
+export JAVA_HOME="/opt/jdk1.8.0_72/"                                                                                                                               
+export PATH="$PATH:/opt/jdk1.8.0_72/bin:/opt/jdk1.8.0_72/jre/bin:/opt/hadoop/bin/:/opt/hadoop/sbin/"
 export HADOOP_HOME="/opt/hadoop"
 export PATH="$PATH:$HADOOP_HOME/bin:$HADOOP_HOME/sbin:$SPARK_HOME/bin:$SPARK_HOME/sbin"
 export HADOOP_CONF_DIR="$HADOOP_HOME/etc/hadoop"
@@ -135,11 +135,7 @@ if [ "$SPARK_CONTAINER_DIR" != "" ]; then
     
     cp /opt/spark-2.1.0-bin-hadoop2.7/jars/datalake-client-libraries-1.5-SNAPSHOT.jar $HADOOP_HOME/share/hadoop/common/
     cp /root/google-collections-1.0.jar /opt/spark-2.1.0-bin-hadoop2.7/jars/
-    
-    #sed "s/#c.NotebookApp.certfile = u.*/c.NotebookApp.certfile = u\'$CERTFILE_PATH\'/" /root/.jupyter/jupyter_notebook_config.py >> /root/.jupyter/jupyter_notebook_config.py.tmp && \
-	#mv /root/.jupyter/jupyter_notebook_config.py.tmp /root/.jupyter/jupyter_notebook_config.py
-    #sed "s/#c.NotebookApp.keyfile = u.*/c.NotebookApp.keyfile = u\'$KEYFILE_PATH\'/" /root/.jupyter/jupyter_notebook_config.py >> /root/.jupyter/jupyter_notebook_config.py.tmp && \
-	#mv /root/.jupyter/jupyter_notebook_config.py.tmp /root/.jupyter/jupyter_notebook_config.py
+
     sed "s/#c.NotebookApp.notebook_dir = u.*/c.NotebookApp.notebook_dir = u\'$NOTEBOOK_DIR\'/" /root/.jupyter/jupyter_notebook_config.py >> /root/.jupyter/jupyter_notebook_config.py.tmp && \
 	mv /root/.jupyter/jupyter_notebook_config.py.tmp /root/.jupyter/jupyter_notebook_config.py
     
