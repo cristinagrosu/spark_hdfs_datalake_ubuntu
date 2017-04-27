@@ -51,4 +51,9 @@
 <name>fs.dl.impl.defaultUMask</name>
 <value>007</value>
 </property>
+
+<property>
+        <name>fs.dl.impl.transportScheme</name>
+        <value>http</value>
+    </property
 </configuration>
