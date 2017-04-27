@@ -55,5 +55,5 @@
 <property>
         <name>fs.dl.impl.transportScheme</name>
         <value>http</value>
-    </property
+    </property>
 </configuration>
