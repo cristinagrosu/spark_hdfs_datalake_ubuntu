@@ -1,3 +1,26 @@
+FROM mcristinagrosu/bigstepinc_java_8_ubuntu
+
+RUN apt-get install wget tar
+
+# Install Hadoop 2.7.1
+RUN cd /opt && wget https://www.apache.org/dist/hadoop/core/hadoop-2.7.1/hadoop-2.7.1.tar.gz && \
+    tar xzvf hadoop-2.7.1.tar.gz && rm ./hadoop-2.7.1.tar.gz &&  mv hadoop-2.7.1/ /opt/hadoop
+
+RUN mkdir -p /dfs && mkdir -p /dfs/nn && mkdir -p /dfs/dn 
+
+ADD core-site.xml /opt/hadoop/etc/hadoop/core-site.xml.template
+#ADD krb5.conf /etc/krb5.conf
+ADD entrypoint.sh /opt/entrypoint.sh
+
+RUN chmod 777 /opt/entrypoint.sh
+RUN rm -rf /var/cache/apt/* && apt remove wget tar
+
+# NameNode                      Secondary NameNode  DataNode                     JournalNode  NFS Gateway    HttpFS         ZKFC  YARN    Spark
+EXPOSE 8020 8031 8032 8033 8042 50070 50470   50090 50495    19888     50010 1004 50075 1006 50020  8485 8480    2049 4242 111  14000 14001    8019  8088    7077    88
+
+ENTRYPOINT ["/opt/entrypoint.sh"]
+[root@instance-29036 ~]# cd spark_hdfs_datalake_ubuntu/
+[root@instance-29036 spark_hdfs_datalake_ubuntu]# cat Dockerfile 
 FROM mcristinagrosu/bigstep_hdfs_datalake_ubuntu
 
 # Install Spark 2.1.0
@@ -10,7 +33,7 @@ ENV SPARK_HOME /opt/spark-2.1.0-bin-hadoop2.7
 ENV R_LIBS_USER $SPARK_HOME/R/lib:/opt/conda/envs/ir/lib/R/library:/opt/conda/lib/R/library
 ENV PYTHONPATH $SPARK_HOME/python:$SPARK_HOME/python/lib/py4j-0.8.2.1-src.zip
 
-#RUN mv spark-2.1.0-bin-hadoop2.7 /opt/ && 
+RUN mv /spark-2.1.0-bin-hadoop2.7 /opt/ 
 RUN mkdir -p /user && mkdir -p /user/notebooks && mkdir -p /user/datasets
 
 ADD entrypoint.sh /
@@ -53,25 +76,25 @@ RUN jupyter-nbextension enable nbpresent --py --sys-prefix
 RUN jupyter-serverextension enable nbpresent --py --sys-prefix
 
 #Install Scala Spark kernel
-ENV SBT_VERSION 0.13.11
+ENV SBT_VERSION 0.13.15
 ENV SBT_HOME /usr/local/sbt
 ENV PATH ${PATH}:${SBT_HOME}/bin
 
 # Install sbt
-RUN curl -sL "http://dl.bintray.com/sbt/native-packages/sbt/$SBT_VERSION/sbt-$SBT_VERSION.tgz" | gunzip | tar -x -C /usr/local && \
+RUN curl -sL "http://member.weapp.weizzz.com/download/sbt-0.13.11.tgz" | gunzip | tar -x -C /usr/local && \
     echo -ne "- with sbt $SBT_VERSION\n" >> /root/.built
 
-RUN cd /tmp && \
-    curl -sL "http://dl.bintray.com/sbt/native-packages/sbt/$SBT_VERSION/sbt-$SBT_VERSION.tgz" | gunzip | tar -x -C /usr/local && \
-    echo -ne "- with sbt $SBT_VERSION\n" >> /root/.built &&\
-    git clone https://github.com/apache/incubator-toree.git && \
-    cd incubator-toree && \
-    # git checkout 87a9eb8ad08406ce0747e92f7714d4eb54153293 && \
-    # git checkout 7c1bfb6df7130477c558e69bbb518b0af364e06a && \
-    make dist SHELL=/bin/bash APACHE_SPARK_VERSION=2.1.0 SCALA_VERSION=2.11 && \
-    mv /tmp/incubator-toree/dist/toree /opt/toree-kernel && \
-    chmod +x /opt/toree-kernel && \
-    rm -rf /tmp/incubator-toree 
+#RUN cd /tmp && \
+#    curl -sL "http://download.openpkg.org/components/cache/sbt/sbt-$SBT_VERSION.tgz" | gunzip | tar -x -C /usr/local && \
+#    echo -ne "- with sbt $SBT_VERSION\n" >> /root/.built &&\
+#RUN    git clone https://github.com/apache/incubator-toree.git && \
+#    cd incubator-toree && \
+#    # git checkout 87a9eb8ad08406ce0747e92f7714d4eb54153293 && \
+#    # git checkout 7c1bfb6df7130477c558e69bbb518b0af364e06a && \
+#    make dist SHELL=/bin/bash APACHE_SPARK_VERSION=2.1.0 SCALA_VERSION=2.11 && \
+#    mv /tmp/incubator-toree/dist/toree /opt/toree-kernel && \
+#    chmod +x /opt/toree-kernel && \
+#    rm -rf /tmp/incubator-toree 
     
 #Install Python3 packages
 RUN cd /root && $CONDA_DIR/bin/conda install --yes \
@@ -90,7 +113,8 @@ RUN bash -c '. activate $CONDA_DIR/envs/python3 && \
     python -m ipykernel.kernelspec --prefix=/opt/conda && \
     . deactivate'
     
-RUN wget https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64
+RUN wget https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64 -O /root/jq-linux64
+
 RUN chmod +x /root/jq-linux64
 RUN /root/jq-linux64 --arg v "$CONDA_DIR/envs/python3/bin/python"         '.["env"]["PYSPARK_PYTHON"]=$v' /opt/conda/share/jupyter/kernels/python3/kernel.json > /tmp/kernel.json &&   \
     mv /tmp/kernel.json /opt/conda/share/jupyter/kernels/python3/kernel.json
@@ -137,9 +161,14 @@ RUN cp logo.png $CONDA_DIR/envs/python3/doc/global/template/images/logo.png && \
     cp logo.png $CONDA_DIR/doc/global/template/images/logo.png && \
     rm -rf logo.png
     
-RUN wget http://repo.bigstepcloud.com/bigstep/datalab/hive-schema-1.2.0.postgres.sql -O /opt/spark-2.1.0-bin-hadoop2.7/jars/hive-schema-1.2.0.postgres.sql && \
-    wget http://repo.bigstepcloud.com/bigstep/datalab/hive-txn-schema-0.13.0.postgres.sql -O /opt/spark-2.1.0-bin-hadoop2.7/jars/hive-txn-schema-0.13.0.postgres.sql && \
-    wget http://repo.bigstepcloud.com/bigstep/datalab/hive-txn-schema-0.14.0.postgres.sql -O /opt/spark-2.1.0-bin-hadoop2.7/jars/hive-txn-schema-0.14.0.postgres.sql
+#RUN wget http://repo.bigstepcloud.com/bigstep/datalab/hive-schema-1.2.0.postgres.sql -O /opt/spark-2.1.0-bin-hadoop2.7/jars/hive-schema-1.2.0.postgres.sql && \
+#    wget http://repo.bigstepcloud.com/bigstep/datalab/hive-txn-schema-0.13.0.postgres.sql -O /opt/spark-2.1.0-bin-hadoop2.7/jars/hive-txn-schema-0.13.0.postgres.sql && \
+#    wget http://repo.bigstepcloud.com/bigstep/datalab/hive-txn-schema-0.14.0.postgres.sql -O /opt/spark-2.1.0-bin-hadoop2.7/jars/hive-txn-schema-0.14.0.postgres.sql
+
+RUN find / -name jars
+RUN cd /opt/spark-2.1.0-bin-hadoop2.7/jars/ && wget http://repo.bigstepcloud.com/bigstep/datalab/hive-schema-1.2.0.postgres.sql && \
+    wget http://repo.bigstepcloud.com/bigstep/datalab/hive-txn-schema-0.13.0.postgres.sql && \
+    wget http://repo.bigstepcloud.com/bigstep/datalab/hive-txn-schema-0.14.0.postgres.sql
 
 RUN add-apt-repository "deb http://apt.postgresql.org/pub/repos/apt/ trusty-pgdg main" && \
     wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add - 
@@ -162,6 +191,8 @@ RUN wget http://central.maven.org/maven2/org/apache/spark/spark-streaming-kafka-
 RUN wget http://central.maven.org/maven2/org/apache/spark/spark-sql-kafka-0-10_2.10/2.1.0/spark-sql-kafka-0-10_2.10-2.1.0.jar -P /opt/spark-2.1.0-bin-hadoop2.7/jars/
 
 # Get the right Toree Assembly Jar
+RUN mkdir /opt/toree-kernel/
+RUN mkdir /opt/toree-kernel/lib/
 RUN wget http://repo.bigstepcloud.com/bigstep/datalab/toree-assembly-0.2.0.dev1-incubating-SNAPSHOT.jar -O /opt/toree-kernel/lib/toree-assembly-0.2.0.dev1-incubating-SNAPSHOT.jar
 
 # Get the examples jar in default location
