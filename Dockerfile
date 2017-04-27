@@ -1,26 +1,3 @@
-FROM mcristinagrosu/bigstepinc_java_8_ubuntu
-
-RUN apt-get install wget tar
-
-# Install Hadoop 2.7.1
-RUN cd /opt && wget https://www.apache.org/dist/hadoop/core/hadoop-2.7.1/hadoop-2.7.1.tar.gz && \
-    tar xzvf hadoop-2.7.1.tar.gz && rm ./hadoop-2.7.1.tar.gz &&  mv hadoop-2.7.1/ /opt/hadoop
-
-RUN mkdir -p /dfs && mkdir -p /dfs/nn && mkdir -p /dfs/dn 
-
-ADD core-site.xml /opt/hadoop/etc/hadoop/core-site.xml.template
-#ADD krb5.conf /etc/krb5.conf
-ADD entrypoint.sh /opt/entrypoint.sh
-
-RUN chmod 777 /opt/entrypoint.sh
-RUN rm -rf /var/cache/apt/* && apt remove wget tar
-
-# NameNode                      Secondary NameNode  DataNode                     JournalNode  NFS Gateway    HttpFS         ZKFC  YARN    Spark
-EXPOSE 8020 8031 8032 8033 8042 50070 50470   50090 50495    19888     50010 1004 50075 1006 50020  8485 8480    2049 4242 111  14000 14001    8019  8088    7077    88
-
-ENTRYPOINT ["/opt/entrypoint.sh"]
-[root@instance-29036 ~]# cd spark_hdfs_datalake_ubuntu/
-[root@instance-29036 spark_hdfs_datalake_ubuntu]# cat Dockerfile 
 FROM mcristinagrosu/bigstep_hdfs_datalake_ubuntu
 
 # Install Spark 2.1.0
@@ -160,10 +137,6 @@ RUN cp logo.png $CONDA_DIR/envs/python3/doc/global/template/images/logo.png && \
     cp logo.png $CONDA_DIR/lib/python2.7/site-packages/notebook/static/base/images/logo.png && \
     cp logo.png $CONDA_DIR/doc/global/template/images/logo.png && \
     rm -rf logo.png
-    
-#RUN wget http://repo.bigstepcloud.com/bigstep/datalab/hive-schema-1.2.0.postgres.sql -O /opt/spark-2.1.0-bin-hadoop2.7/jars/hive-schema-1.2.0.postgres.sql && \
-#    wget http://repo.bigstepcloud.com/bigstep/datalab/hive-txn-schema-0.13.0.postgres.sql -O /opt/spark-2.1.0-bin-hadoop2.7/jars/hive-txn-schema-0.13.0.postgres.sql && \
-#    wget http://repo.bigstepcloud.com/bigstep/datalab/hive-txn-schema-0.14.0.postgres.sql -O /opt/spark-2.1.0-bin-hadoop2.7/jars/hive-txn-schema-0.14.0.postgres.sql
 
 RUN find / -name jars
 RUN cd /opt/spark-2.1.0-bin-hadoop2.7/jars/ && wget http://repo.bigstepcloud.com/bigstep/datalab/hive-schema-1.2.0.postgres.sql && \
