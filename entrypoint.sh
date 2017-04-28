@@ -301,7 +301,7 @@ CLASSPATH=/opt/spark-2.1.0-bin-hadoop2.7/jars/
 
 if [ "$MODE" == "master" ]; then 
 	${SPARK_HOME}/bin/spark-class "org.apache.spark.deploy.master.Master" -h $SPARK_MASTER_HOSTNAME --port $SPARK_MASTER_PORT --webui-port $SPARK_MASTER_WEBUI_PORT &
-	jupyter notebook --ip=0.0.0.0 --log-level DEBUG --allow-root
+	jupyter notebook --ip=0.0.0.0 --log-level DEBUG --allow-root --NotebookApp.iopub_data_rate_limit=10000000000
 
 elif [ "$MODE" == "worker" ]; then
 	${SPARK_HOME}/bin/spark-class "org.apache.spark.deploy.worker.Worker" --webui-port $SPARK_WORKER_WEBUI_PORT --port $SPARK_WORKER_PORT $SPARK_MASTER_URL -c $CORES -m $MEM 
@@ -312,5 +312,5 @@ elif [ "$MODE" == "thrift" ]; then
 else
 	${SPARK_HOME}/bin/spark-class "org.apache.spark.deploy.master.Master" -h $SPARK_MASTER_HOSTNAME --port $SPARK_MASTER_PORT --webui-port $SPARK_MASTER_WEBUI_PORT &
 	${SPARK_HOME}/bin/spark-class "org.apache.spark.deploy.worker.Worker" --webui-port $SPARK_WORKER_WEBUI_PORT --port $SPARK_WORKER_PORT $SPARK_MASTER_URL	-c $CORES -m $MEM  &
-	jupyter notebook --ip=0.0.0.0 --log-level DEBUG --allow-root
+	jupyter notebook --ip=0.0.0.0 --log-level DEBUG --allow-root --NotebookApp.iopub_data_rate_limit=10000000000
 fi
