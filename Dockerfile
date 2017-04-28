@@ -66,18 +66,6 @@ ENV PATH ${PATH}:${SBT_HOME}/bin
 # Install sbt
 RUN curl -sL "http://member.weapp.weizzz.com/download/sbt-0.13.11.tgz" | gunzip | tar -x -C /usr/local && \
     echo -ne "- with sbt $SBT_VERSION\n" >> /root/.built
-
-#RUN cd /tmp && \
-#    curl -sL "http://download.openpkg.org/components/cache/sbt/sbt-$SBT_VERSION.tgz" | gunzip | tar -x -C /usr/local && \
-#    echo -ne "- with sbt $SBT_VERSION\n" >> /root/.built &&\
-#RUN    git clone https://github.com/apache/incubator-toree.git && \
-#    cd incubator-toree && \
-#    # git checkout 87a9eb8ad08406ce0747e92f7714d4eb54153293 && \
-#    # git checkout 7c1bfb6df7130477c558e69bbb518b0af364e06a && \
-#    make dist SHELL=/bin/bash APACHE_SPARK_VERSION=2.1.0 SCALA_VERSION=2.11 && \
-#    mv /tmp/incubator-toree/dist/toree /opt/toree-kernel && \
-#    chmod +x /opt/toree-kernel && \
-#    rm -rf /tmp/incubator-toree 
     
 #Install Python3 packages
 RUN cd /root && $CONDA_DIR/bin/conda install --yes \
@@ -169,11 +157,6 @@ RUN wget http://central.maven.org/maven2/org/apache/spark/spark-streaming-kafka-
 #Get Kafka Structured Streaming connector
 RUN wget http://central.maven.org/maven2/org/apache/spark/spark-sql-kafka-0-10_2.10/2.1.0/spark-sql-kafka-0-10_2.10-2.1.0.jar -P /opt/spark-2.1.0-bin-hadoop2.7/jars/
 
-# Get the right Toree Assembly Jar
-RUN mkdir /opt/toree-kernel/
-RUN mkdir /opt/toree-kernel/lib/
-RUN wget http://repo.bigstepcloud.com/bigstep/datalab/toree-assembly-0.2.0.dev1-incubating-SNAPSHOT.jar -O /opt/toree-kernel/lib/toree-assembly-0.2.0.dev1-incubating-SNAPSHOT.jar
-
 # Get the examples jar in default location
 RUN cp /opt/spark-2.1.0-bin-hadoop2.7/examples/jars/spark-examples_2.11-2.1.0.jar /opt/spark-2.1.0-bin-hadoop2.7/jars/spark-examples_2.11-2.1.0.jar
 
@@ -182,6 +165,21 @@ ADD spark-daemon.sh /opt/spark-2.1.0-bin-hadoop2.7/sbin/spark-daemon.sh
 
 #Overwrite log4j properties file
 ADD log4j.properties /opt/spark-2.1.0-bin-hadoop2.7/conf/log4j.properties
+
+RUN cd /tmp && \
+    curl -sL "http://dl.bintray.com/sbt/native-packages/sbt/$SBT_VERSION/sbt-$SBT_VERSION.tgz" | gunzip | tar -x -C /usr/local && \
+    echo -ne "- with sbt $SBT_VERSION\n" >> /root/.built &&\
+    git clone https://github.com/apache/incubator-toree.git && \
+    cd incubator-toree && \
+    # git checkout 87a9eb8ad08406ce0747e92f7714d4eb54153293 && \
+    # git checkout 7c1bfb6df7130477c558e69bbb518b0af364e06a && \
+    make dist SHELL=/bin/bash APACHE_SPARK_VERSION=2.1.0 SCALA_VERSION=2.11 && \
+    mv /tmp/incubator-toree/dist/toree /opt/toree-kernel && \
+    chmod +x /opt/toree-kernel && \
+    rm -rf /tmp/incubator-toree 
+    
+ # Get the right Toree Assembly Jar
+RUN wget http://repo.bigstepcloud.com/bigstep/datalab/toree-assembly-0.2.0.dev1-incubating-SNAPSHOT.jar -O /opt/toree-kernel/lib/toree-assembly-0.2.0.dev1-incubating-SNAPSHOT.jar
 
 #        SparkMaster  SparkMasterWebUI  SparkWorkerWebUI REST     Jupyter Spark		Thrift
 EXPOSE    7077        8080              8081              6066    8888      4040     88   10000
