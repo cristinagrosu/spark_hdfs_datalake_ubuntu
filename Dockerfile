@@ -8,7 +8,7 @@ RUN rm  /opt/spark-2.1.0-bin-hadoop2.7.tgz
 RUN curl -L -C - -b "oraclelicense=accept-securebackup-cookie" -O http://download.oracle.com/otn-pub/java/jce/8/jce_policy-8.zip
 RUN apt-get install -y unzip
 RUN unzip jce_policy-8.zip
-RUN cp UnlimitedJCEPolicyJDK8/US_export_policy.jar /opt/jdk1.8.0_72/jre/lib/security/
+RUN cp UnlimitedJCEPolicyJDK8/US_export_policy.jar /opt/jdk1.8.0_72/jre/lib/security/ && cp UnlimitedJCEPolicyJDK8/local_policy.jar /opt/jdk1.8.0_72/jre/lib/security/
 RUN rm /opt/jdk1.8.0_72/jre/lib/security/local_policy.jar
 RUN rm -rf UnlimitedJCEPolicyJDK8
 
