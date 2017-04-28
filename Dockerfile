@@ -9,7 +9,6 @@ RUN curl -L -C - -b "oraclelicense=accept-securebackup-cookie" -O http://downloa
 RUN apt-get install -y unzip
 RUN unzip jce_policy-8.zip
 RUN cp UnlimitedJCEPolicyJDK8/US_export_policy.jar /opt/jdk1.8.0_72/jre/lib/security/ && cp UnlimitedJCEPolicyJDK8/local_policy.jar /opt/jdk1.8.0_72/jre/lib/security/
-RUN rm /opt/jdk1.8.0_72/jre/lib/security/local_policy.jar
 RUN rm -rf UnlimitedJCEPolicyJDK8
 
 # Spark pointers
