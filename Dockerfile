@@ -112,9 +112,14 @@ RUN cd /root && wget http://central.maven.org/maven2/com/google/collections/goog
 #    ln -s /lib/x86_64-linux-gnu/libreadline.so.6 $CONDA_DIR/pkgs/readline-6.2-2/lib/libreadline.so.6
     
 #Add Getting Started Notebooks
-RUN wget http://repo.bigstepcloud.com/bigstep/datalab/DataLab%20Getting%20Started%20in%20Scala.ipynb -O /user/notebooks/DataLab\ Getting\ Started\ in\ Scala.ipynb
-RUN wget http://repo.bigstepcloud.com/bigstep/datalab/DataLab%20Getting%20Started%20in%20R.ipynb -O /user/notebooks/DataLab\ Getting\ Started\ in\ R.ipynb
-RUN wget http://repo.bigstepcloud.com/bigstep/datalab/DataLab%20Getting%20Started%20in%20Python.ipynb -O /user/notebooks/DataLab\ Getting\ Started\ in\ Python.ipynb
+#RUN wget http://repo.bigstepcloud.com/bigstep/datalab/DataLab%20Getting%20Started%20in%20Scala.ipynb -O /user/notebooks/DataLab\ Getting\ Started\ in\ Scala.ipynb
+#RUN wget http://repo.bigstepcloud.com/bigstep/datalab/DataLab%20Getting%20Started%20in%20R.ipynb -O /user/notebooks/DataLab\ Getting\ Started\ in\ R.ipynb
+#RUN wget http://repo.bigstepcloud.com/bigstep/datalab/DataLab%20Getting%20Started%20in%20Python.ipynb -O /user/notebooks/DataLab\ Getting\ Started\ in\ Python.ipynb
+
+RUN wget http://repo.bigstepcloud.com/bigstep/datalab/DataLab%2BGetting%2BStarted%2Bin%2BScala%20%283%29.ipynb -O /user/notebooks/DataLab\ Getting\ Started\ in\ Scala.ipynb
+RUN wget http://repo.bigstepcloud.com/bigstep/datalab/DataLab%2BGetting%2BStarted%2Bin%2BR%20%281%29.ipynb -O /user/notebooks/DataLab\ Getting\ Started\ in\ R.ipynb
+RUN wget http://repo.bigstepcloud.com/bigstep/datalab/DataLab%2BGetting%2BStarted%2Bin%2BPython%20%283%29.ipynb -O /user/notebooks/DataLab\ Getting\ Started\ in\ Python.ipynb
+
 
 #Add cairo-dev for R notebook
 RUN apt-get update -y
