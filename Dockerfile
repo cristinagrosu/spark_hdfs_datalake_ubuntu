@@ -53,6 +53,8 @@ RUN $CONDA_DIR/bin/jupyter notebook  --generate-config --allow-root
 RUN $CONDA_DIR/bin/conda install -c conda-forge nb_conda
 RUN $CONDA_DIR/bin/python -m nb_conda_kernels.install --disable --prefix=$CONDA_DIR && \
     $CONDA_DIR/bin/conda clean -yt
+RUN pip install nbpresent
+RUN jupyter nbextension install nbpresent --py --overwrite
 RUN jupyter-nbextension enable nb_conda --py --sys-prefix
 RUN jupyter-serverextension enable nb_conda --py --sys-prefix
 RUN jupyter-nbextension enable nbpresent --py --sys-prefix
