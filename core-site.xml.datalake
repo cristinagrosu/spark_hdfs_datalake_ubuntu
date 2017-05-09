@@ -57,3 +57,17 @@
 <value>https</value>
 </property>
 </configuration>
+
+ <!-- This tells the DataLake client if it should encrypt/decrypt files when
+  uploading/downloading. If property is missing, the default value is false. -->
+  <property>
+    <name>fs.fl.impl.shouldUseEncryption</name>
+    <value>ENCRYPTION</value>
+  </property>
+  
+  <!-- The location of the AES key. The file should be exactly 16 bytes long.
+  This property is required if fs.fl.impl.shouldUseEncryption is set to true. -->
+  <property>
+    <name>fs.dl.impl.encryptionKeyPath</name>
+    <value>ENCRYPTION_KEY_PATH</value>
+  </property>
