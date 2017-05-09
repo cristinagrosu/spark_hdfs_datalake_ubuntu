@@ -60,13 +60,22 @@ RUN jupyter-serverextension enable nb_conda --py --sys-prefix
 RUN jupyter-nbextension enable nbpresent --py --sys-prefix
 RUN jupyter-serverextension enable nbpresent --py --sys-prefix
 
+#Add progress bar extension
+
+RUN pip install jupyter-spark
+RUN jupyter serverextension enable --py jupyter_spark
+RUN jupyter nbextension install --py jupyter_spark
+RUN jupyter nbextension enable --py jupyter_spark
+RUN jupyter nbextension enable --py widgetsnbextension
+RUN pip install lxml
+
 #Install Scala Spark kernel
 ENV SBT_VERSION 0.13.15
 ENV SBT_HOME /usr/local/sbt
 ENV PATH ${PATH}:${SBT_HOME}/bin
 
 # Install sbt
-RUN curl -sL "http://member.weapp.weizzz.com/download/sbt-0.13.11.tgz" | gunzip | tar -x -C /usr/local && \
+RUN curl -sL "http://repo.bigstepcloud.com/bigstep/datalab/sbt-0.13.11.tgz" | gunzip | tar -x -C /usr/local && \
     echo -ne "- with sbt $SBT_VERSION\n" >> /root/.built
     
 #Install Python3 packages
@@ -114,10 +123,6 @@ RUN cd /root && wget http://central.maven.org/maven2/com/google/collections/goog
 #    ln -s /lib/x86_64-linux-gnu/libreadline.so.6 $CONDA_DIR/pkgs/readline-6.2-2/lib/libreadline.so.6
     
 #Add Getting Started Notebooks
-#RUN wget http://repo.bigstepcloud.com/bigstep/datalab/DataLab%20Getting%20Started%20in%20Scala.ipynb -O /user/notebooks/DataLab\ Getting\ Started\ in\ Scala.ipynb
-#RUN wget http://repo.bigstepcloud.com/bigstep/datalab/DataLab%20Getting%20Started%20in%20R.ipynb -O /user/notebooks/DataLab\ Getting\ Started\ in\ R.ipynb
-#RUN wget http://repo.bigstepcloud.com/bigstep/datalab/DataLab%20Getting%20Started%20in%20Python.ipynb -O /user/notebooks/DataLab\ Getting\ Started\ in\ Python.ipynb
-
 RUN wget http://repo.bigstepcloud.com/bigstep/datalab/DataLab%2BGetting%2BStarted%2Bin%2BScala%20%283%29.ipynb -O /user/notebooks/DataLab\ Getting\ Started\ in\ Scala.ipynb
 RUN wget http://repo.bigstepcloud.com/bigstep/datalab/DataLab%2BGetting%2BStarted%2Bin%2BR%20%281%29.ipynb -O /user/notebooks/DataLab\ Getting\ Started\ in\ R.ipynb
 RUN wget http://repo.bigstepcloud.com/bigstep/datalab/DataLab%2BGetting%2BStarted%2Bin%2BPython%20%283%29.ipynb -O /user/notebooks/DataLab\ Getting\ Started\ in\ Python.ipynb
@@ -178,8 +183,6 @@ RUN cd /tmp && \
     echo -ne "- with sbt $SBT_VERSION\n" >> /root/.built &&\
     git clone https://github.com/apache/incubator-toree.git && \
     cd incubator-toree && \
-    # git checkout 87a9eb8ad08406ce0747e92f7714d4eb54153293 && \
-    # git checkout 7c1bfb6df7130477c558e69bbb518b0af364e06a && \
     make dist SHELL=/bin/bash APACHE_SPARK_VERSION=2.1.0 SCALA_VERSION=2.11 && \
     mv /tmp/incubator-toree/dist/toree /opt/toree-kernel && \
     chmod +x /opt/toree-kernel && \
