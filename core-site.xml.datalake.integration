@@ -56,7 +56,6 @@
         <name>fs.dl.impl.transportScheme</name>
         <value>http</value>
     </property>
-</configuration>
 
  <!-- This tells the DataLake client if it should encrypt/decrypt files when
   uploading/downloading. If property is missing, the default value is false. -->
@@ -71,3 +70,4 @@
     <name>fs.dl.impl.encryptionKeyPath</name>
     <value>ENCRYPTION_KEY_PATH</value>
   </property>
+  </configuration>
