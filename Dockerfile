@@ -75,8 +75,10 @@ ENV SBT_HOME /usr/local/sbt
 ENV PATH ${PATH}:${SBT_HOME}/bin
 
 # Install sbt
-RUN curl -sL "http://repo.bigstepcloud.com/bigstep/datalab/sbt-0.13.11.tgz" | gunzip | tar -x -C /usr/local && \
-    echo -ne "- with sbt $SBT_VERSION\n" >> /root/.built
+RUN wget "http://repo.bigstepcloud.com/bigstep/datalab/sbt-0.13.11.tgz"
+RUN tar -xvf /sbt-0.13.11.tgz 
+RUN mv /sbt /usr/local/ && echo -ne "- with sbt $SBT_VERSION\n" >> /root/.built
+
     
 #Install Python3 packages
 RUN cd /root && $CONDA_DIR/bin/conda install --yes \
