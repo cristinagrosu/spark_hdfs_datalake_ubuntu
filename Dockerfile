@@ -190,6 +190,9 @@ RUN cd /tmp && \
     chmod +x /opt/toree-kernel && \
     rm -rf /tmp/incubator-toree 
     
+RUN cp /opt/spark-2.1.0-bin-hadoop2.7/jars/commons-crypto-1.0.0.jar /opt/hadoop/share/hadoop/common/
+RUN cp /opt/spark-2.1.0-bin-hadoop2.7/jars/commons-crypto-1.0.0.jar /opt/hadoop/share/hadoop/common/lib/
+    
  # Get the right Toree Assembly Jar
 RUN wget http://repo.bigstepcloud.com/bigstep/datalab/toree-assembly-0.2.0.dev1-incubating-SNAPSHOT.jar -O /opt/toree-kernel/lib/toree-assembly-0.2.0.dev1-incubating-SNAPSHOT.jar
 
