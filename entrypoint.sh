@@ -43,7 +43,7 @@ if [ "$ENCRYPTION" != "" ]; then
 	
 	cp /opt/hadoop/etc/hadoop/core-site.xml /opt/spark-2.1.0-bin-hadoop2.7/conf/core-site.xml
 	
-	sed "s/ENCRYPTION_KEY_PATH/${ENCRYPTION_KEY_PATH}/" /opt/hadoop/etc/hadoop/core-site.xml >> /opt/hadoop/etc/hadoop/core-site.xml.tmp && \
+	sed "s/ENC_KEY_PATH/${ENC_KEY_PATH}/" /opt/hadoop/etc/hadoop/core-site.xml >> /opt/hadoop/etc/hadoop/core-site.xml.tmp && \
 	mv /opt/hadoop/etc/hadoop/core-site.xml.tmp /opt/hadoop/etc/hadoop/core-site.xml
 	
 	cp /opt/hadoop/etc/hadoop/core-site.xml /opt/spark-2.1.0-bin-hadoop2.7/conf/core-site.xml
@@ -60,6 +60,14 @@ if [ "$DATALAKE_USER" != "" ]; then
 	
 	cp /opt/hadoop/etc/hadoop/core-site.xml /opt/spark-2.1.0-bin-hadoop2.7/conf/core-site.xml
 fi
+
+if [ "$DATALAKE_DOMAIN" != "" ]; then
+	sed "s/DATALAKE_DOMAIN/$DATALAKE_DOMAIN/" /opt/hadoop/etc/hadoop/core-site.xml >> /opt/hadoop/etc/hadoop/core-site.xml.tmp && \
+	mv /opt/hadoop/etc/hadoop/core-site.xml.tmp /opt/hadoop/etc/hadoop/core-site.xml
+	
+	cp /opt/hadoop/etc/hadoop/core-site.xml /opt/spark-2.1.0-bin-hadoop2.7/conf/core-site.xml
+fi
+
 if [ "$KEYTAB_PATH" != "" ]; then
 	sed "s/KEYTAB_PATH/${KEYTAB_PATH}/" /opt/hadoop/etc/hadoop/core-site.xml >> /opt/hadoop/etc/hadoop/core-site.xml.tmp && \
 	mv /opt/hadoop/etc/hadoop/core-site.xml.tmp /opt/hadoop/etc/hadoop/core-site.xml
