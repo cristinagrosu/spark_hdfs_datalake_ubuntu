@@ -68,6 +68,11 @@
   This property is required if fs.fl.impl.shouldUseEncryption is set to true. -->
   <property>
     <name>fs.dl.impl.encryptionKeyPath</name>
-    <value>ENCRYPTION_KEY_PATH</value>
+    <value>ENC_KEY_PATH</value>
+  </property>
+  
+  <property>
+   <name>fs.dl.impl.datalakeDatanodesDomain</name>
+   <value>DATALAKE_DOMAIN</value>
   </property>
 </configuration>
