@@ -152,7 +152,8 @@ fi
 
 if [ "$SPARK_CONTAINER_DIR" != "" ]; then
     
-    cp /opt/spark-2.1.0-bin-hadoop2.7/jars/datalake-client-libraries-1.5-SNAPSHOT.jar $HADOOP_HOME/share/hadoop/common/
+    #cp /opt/spark-2.1.0-bin-hadoop2.7/jars/datalake-client-libraries-1.5-SNAPSHOT.jar $HADOOP_HOME/share/hadoop/common/
+    cp /opt/spark-2.1.0-bin-hadoop2.7/jars/datalake-client-libraries-1.5.jar $HADOOP_HOME/share/hadoop/common/
     cp /root/google-collections-1.0.jar /opt/spark-2.1.0-bin-hadoop2.7/jars/
 
     sed "s/#c.NotebookApp.notebook_dir = u.*/c.NotebookApp.notebook_dir = u\'$NOTEBOOK_DIR\'/" /root/.jupyter/jupyter_notebook_config.py >> /root/.jupyter/jupyter_notebook_config.py.tmp && \
