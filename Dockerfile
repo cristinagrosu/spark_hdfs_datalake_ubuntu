@@ -160,8 +160,8 @@ RUN apt-get install -y postgresql-client
 ADD password.py /opt
 
 # Download Bigstep Data Lake Client Libraries
-RUN wget https://github.com/bigstepinc/datalake-client-libraries/releases/download/untagged-9758317a72f268684537/datalake-client-libraries-1.5-SNAPSHOT.jar -P /opt/spark-2.1.0-bin-hadoop2.7/jars/
-
+#RUN wget https://github.com/bigstepinc/datalake-client-libraries/releases/download/untagged-9758317a72f268684537/datalake-client-libraries-1.5-SNAPSHOT.jar -P /opt/spark-2.1.0-bin-hadoop2.7/jars/
+RUN wget https://bigstepcloud.slack.com/files/cezar.agrigoroaei/F5G9XQ1AQ/datalake-client-libraries-1.5.jar -P /opt/spark-2.1.0-bin-hadoop2.7/jars/
 # Get Spark Thrift Postgresql connector
 RUN wget https://jdbc.postgresql.org/download/postgresql-9.4.1212.jar -P /opt/spark-2.1.0-bin-hadoop2.7/jars/
 
