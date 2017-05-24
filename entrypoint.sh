@@ -47,6 +47,24 @@ if [ "$ENCRYPTION" != "" ]; then
 	mv /opt/hadoop/etc/hadoop/core-site.xml.tmp /opt/hadoop/etc/hadoop/core-site.xml
 	
 	cp /opt/hadoop/etc/hadoop/core-site.xml /opt/spark-2.1.0-bin-hadoop2.7/conf/core-site.xml
+	
+	# Download Bigstep Data Lake Client Libraries
+	# there is a DLEncryption already initialized error that has to be treated before enabling encryption on Spark clusters. For testing and development purposes I commented that section
+	if [ "$ENCRYPTION" == "true" ]; then 
+		wget https://github.com/bigstepinc/datalake-client-libraries/releases/download/1.5.2/datalake-client-libraries-1.5-SNAPSHOT.jar -P /opt/spark-2.1.0-bin-hadoop2.7/jars/
+		
+		if [ "$CIPHER_CLASS" != "" ]; then
+			echo "spark.authenticate.encryption.aes.cipher.class=$CIPHER_CLASS" >> /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf
+		fi
+		if [ "$CIPHER_KEYSIZE" != "" ]; then 
+			echo "spark.authenticate.encryption.aes.cipher.keySize=$CIPHER_KEYSIZE" >> /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf
+		fi
+		if [ "$AUTH_ENC" != "" ]; then
+			echo "spark.authenticate.encryption.aes.enabled=$AUTH_ENC" >> /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf
+		fi
+	else
+		wget https://github.com/bigstepinc/datalake-client-libraries/releases/download/untagged-9758317a72f268684537/datalake-client-libraries-1.5-SNAPSHOT.jar -P /opt/spark-2.1.0-bin-hadoop2.7/jars/
+	fi
 fi
 
 if [ "$SPARK_WAREHOUSE_DIR" != "" ]; then
