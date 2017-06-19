@@ -178,14 +178,14 @@ fi
 
 if [ "$NOTEBOOK_DIR" != "" ]; then
 
-	mkdir -P $NOTEBOOK_DIR/$SPARK_PUBLIC_DNS/notebooks
+	mkdir $NOTEBOOK_DIR/$SPARK_PUBLIC_DNS/notebooks
 	cp /user/notebooks/* $NOTEBOOK_DIR/$SPARK_PUBLIC_DNS/notebooks/
 	
-	mkdir -P $NOTEBOOK_DIR/$SPARK_PUBLIC_DNS/logs
-	mkdir -P $NOTEBOOK_DIR/$SPARK_PUBLIC_DNS/work
-	mkdir -P $NOTEBOOK_DIR/$SPARK_PUBLIC_DNS/local
+	mkdir $NOTEBOOK_DIR/$SPARK_PUBLIC_DNS/logs
+	mkdir $NOTEBOOK_DIR/$SPARK_PUBLIC_DNS/work
+	mkdir $NOTEBOOK_DIR/$SPARK_PUBLIC_DNS/local
 	
-	sed "s/#c.NotebookApp.notebook_dir = u.*/c.NotebookApp.notebook_dir = u\'$NOTEBOOK_DIR/$SPARK_PUBLIC_DNS/notebooks/\'/" /root/.jupyter/jupyter_notebook_config.py >> /root/.jupyter/jupyter_notebook_config.py.tmp && \
+	sed "s/#c.NotebookApp.notebook_dir = u.*/c.NotebookApp.notebook_dir = u\'$ESCAPED_NOTEBOOK_DIR\/$SPARK_PUBLIC_DNS\/notebooks\'/" /root/.jupyter/jupyter_notebook_config.py >> /root/.jupyter/jupyter_notebook_config.py.tmp
 	mv /root/.jupyter/jupyter_notebook_config.py.tmp /root/.jupyter/jupyter_notebook_config.py
 	
 	cp /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-env.sh.template /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-env.sh
