@@ -173,12 +173,30 @@ if [ "$SPARK_CONTAINER_DIR" != "" ]; then
     cp /opt/spark-2.1.0-bin-hadoop2.7/jars/datalake-client-libraries-1.5-SNAPSHOT.jar $HADOOP_HOME/share/hadoop/common/
     cp /opt/spark-2.1.0-bin-hadoop2.7/jars/datalake-client-libraries-1.5-SNAPSHOT.jar $HADOOP_HOME/share/hadoop/common/lib/
     cp /root/google-collections-1.0.jar /opt/spark-2.1.0-bin-hadoop2.7/jars/
-
-    sed "s/#c.NotebookApp.notebook_dir = u.*/c.NotebookApp.notebook_dir = u\'$NOTEBOOK_DIR\'/" /root/.jupyter/jupyter_notebook_config.py >> /root/.jupyter/jupyter_notebook_config.py.tmp && \
-	mv /root/.jupyter/jupyter_notebook_config.py.tmp /root/.jupyter/jupyter_notebook_config.py
-    
     cp $SPARK_CONTAINER_DIR/user.keytab $KEYTAB_PATH_URI
 fi 
+
+if [ "$NOTEBOOK_DIR" != "" ]; then
+
+	mkdir -P $NOTEBOOK_DIR/$SPARK_PUBLIC_DNS/notebooks
+	cp /user/notebooks/* $NOTEBOOK_DIR/$SPARK_PUBLIC_DNS/notebooks/
+	
+	mkdir -P $NOTEBOOK_DIR/$SPARK_PUBLIC_DNS/logs
+	mkdir -P $NOTEBOOK_DIR/$SPARK_PUBLIC_DNS/work
+	mkdir -P $NOTEBOOK_DIR/$SPARK_PUBLIC_DNS/local
+	
+	sed "s/#c.NotebookApp.notebook_dir = u.*/c.NotebookApp.notebook_dir = u\'$NOTEBOOK_DIR/$SPARK_PUBLIC_DNS/notebooks/\'/" /root/.jupyter/jupyter_notebook_config.py >> /root/.jupyter/jupyter_notebook_config.py.tmp && \
+	mv /root/.jupyter/jupyter_notebook_config.py.tmp /root/.jupyter/jupyter_notebook_config.py
+	
+	cp /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-env.sh.template /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-env.sh
+	echo "SPARK_WORKER_DIR=${ESCAPED_NOTEBOOK_DIR}\/$SPARK_PUBLIC_DNS\/work" >> /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-env.sh
+	
+	sed "s/LOG_DIR/${ESCAPED_NOTEBOOK_DIR}\/$SPARK_PUBLIC_DNS\/logs/" /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf >> /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf.tmp && \
+	mv /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf.tmp /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf
+
+	sed "s/LOCAL_DIR/${ESCAPED_NOTEBOOK_DIR}\/$SPARK_PUBLIC_DNS\/local/" /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf >> /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf.tmp && \
+	mv /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf.tmp /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf
+fi
 
 sed "s/HOSTNAME_MASTER/$SPARK_MASTER_HOSTNAME/" /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf >> /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf.tmp && \
 mv /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf.tmp /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf
@@ -330,6 +348,14 @@ if [ "$SPARK_RPC_NUM_RETRIES" != "" ]; then
 	sed "s/SPARK_RPC_NUM_RETRIES/$SPARK_RPC_NUM_RETRIES/" /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf >> /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf.tmp && \
 	mv /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf.tmp /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf
 fi
+
+if [ "$SPARK_HEARTBEAT" != "" ]; then
+	sed "s/SPARK_HEARTBEAT/$SPARK_HEARTBEAT/" /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf >> /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf.tmp && \
+	mv /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf.tmp /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf
+fi
+
+export TERM=xterm
+
 
 if [ "$MODE" == "" ]; then
 MODE=$1
