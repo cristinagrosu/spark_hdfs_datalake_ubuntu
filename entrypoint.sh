@@ -178,15 +178,15 @@ fi
 
 if [ "$NOTEBOOK_DIR" != "" ]; then
 
-	mkdir $NOTEBOOK_DIR/$SPARK_PUBLIC_DNS/notebooks
-	cp /user/notebooks/* $NOTEBOOK_DIR/$SPARK_PUBLIC_DNS/notebooks/
+	#mkdir $NOTEBOOK_DIR/$SPARK_PUBLIC_DNS/notebooks
+	#cp /user/notebooks/* $NOTEBOOK_DIR/$SPARK_PUBLIC_DNS/notebooks/
 	
 	mkdir $NOTEBOOK_DIR/$SPARK_PUBLIC_DNS/logs
 	mkdir $NOTEBOOK_DIR/$SPARK_PUBLIC_DNS/work
 	mkdir $NOTEBOOK_DIR/$SPARK_PUBLIC_DNS/local
 	
-	sed "s/#c.NotebookApp.notebook_dir = u.*/c.NotebookApp.notebook_dir = u\'$ESCAPED_NOTEBOOK_DIR\/$SPARK_PUBLIC_DNS\/notebooks\'/" /root/.jupyter/jupyter_notebook_config.py >> /root/.jupyter/jupyter_notebook_config.py.tmp
-	mv /root/.jupyter/jupyter_notebook_config.py.tmp /root/.jupyter/jupyter_notebook_config.py
+	#sed "s/#c.NotebookApp.notebook_dir = u.*/c.NotebookApp.notebook_dir = u\'$ESCAPED_NOTEBOOK_DIR\/$SPARK_PUBLIC_DNS\/notebooks\'/" /root/.jupyter/jupyter_notebook_config.py >> /root/.jupyter/jupyter_notebook_config.py.tmp
+	#mv /root/.jupyter/jupyter_notebook_config.py.tmp /root/.jupyter/jupyter_notebook_config.py
 	
 	cp /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-env.sh.template /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-env.sh
 	echo "SPARK_WORKER_DIR=$NOTEBOOK_DIR/$SPARK_PUBLIC_DNS/work" >> /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-env.sh
@@ -196,6 +196,16 @@ if [ "$NOTEBOOK_DIR" != "" ]; then
 
 	sed "s/LOCAL_DIR/${ESCAPED_NOTEBOOK_DIR}\/$SPARK_PUBLIC_DNS\/local/" /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf >> /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf.tmp && \
 	mv /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf.tmp /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf
+fi
+
+if [ "$PERSISTENT_NB_DIR" != "" ]; then
+
+	mkdir $PERSISTENT_NB_DIR/notebooks
+	cp /user/notebooks/* $PERSISTENT_NB_DIR/notebooks/
+	
+	sed "s/#c.NotebookApp.notebook_dir = u.*/c.NotebookApp.notebook_dir = u\'$ESCAPED_PERSISTENT_NB_DIR\/notebooks\'/" /root/.jupyter/jupyter_notebook_config.py >> /root/.jupyter/jupyter_notebook_config.py.tmp
+	mv /root/.jupyter/jupyter_notebook_config.py.tmp /root/.jupyter/jupyter_notebook_config.py
+	
 fi
 
 if [ "$CLEANUP_ENABLED" != "" ]; then
