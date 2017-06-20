@@ -189,7 +189,7 @@ if [ "$NOTEBOOK_DIR" != "" ]; then
 	mv /root/.jupyter/jupyter_notebook_config.py.tmp /root/.jupyter/jupyter_notebook_config.py
 	
 	cp /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-env.sh.template /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-env.sh
-	echo "SPARK_WORKER_DIR=$NOTEBOOK_DIR/$SPARK_PUBLIC_DNS\/work" >> /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-env.sh
+	echo "SPARK_WORKER_DIR=$NOTEBOOK_DIR/$SPARK_PUBLIC_DNS/work" >> /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-env.sh
 	
 	sed "s/LOG_DIR/${ESCAPED_NOTEBOOK_DIR}\/$SPARK_PUBLIC_DNS\/logs/" /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf >> /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf.tmp && \
 	mv /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf.tmp /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf
