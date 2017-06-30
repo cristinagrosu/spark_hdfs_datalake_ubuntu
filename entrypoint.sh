@@ -181,6 +181,8 @@ if [ "$NOTEBOOK_DIR" != "" ]; then
 	#mkdir $NOTEBOOK_DIR/$SPARK_PUBLIC_DNS/notebooks
 	#cp /user/notebooks/* $NOTEBOOK_DIR/$SPARK_PUBLIC_DNS/notebooks/
 	
+	mkdir $NOTEBOOK_DIR
+	mkdir $NOTEBOOK_DIR/$SPARK_PUBLIC_DNS
 	mkdir $NOTEBOOK_DIR/$SPARK_PUBLIC_DNS/logs
 	mkdir $NOTEBOOK_DIR/$SPARK_PUBLIC_DNS/work
 	mkdir $NOTEBOOK_DIR/$SPARK_PUBLIC_DNS/local
