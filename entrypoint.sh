@@ -317,7 +317,7 @@ sed "s/SPARK_POSTGRES_PASSWORD/$SPARK_POSTGRES_PASSWORD/" /opt/spark-2.1.0-bin-h
 mv /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml.tmp /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml
 cp /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml /opt/hadoop/etc/hadoop/
 
-export POSTGRES_PASSWORD=$(cat $SPARK_SECRETS_PATH\/SPARK_POSTGRES_PASSWORD)
+export POSTGRES_PASSWORD=$(cat $SPARK_SECRETS_PATH\/POSTGRES_PASSWORD)
 export PGPASSWORD=$POSTGRES_PASSWORD 
 
 psql -h $POSTGRES_HOSTNAME -p $POSTGRES_PORT  -U $POSTGRES_USER -d $POSTGRES_DB -c "CREATE USER $SPARK_POSTGRES_USER WITH PASSWORD '$SPARK_POSTGRES_PASSWORD';"
