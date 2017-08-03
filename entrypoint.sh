@@ -310,14 +310,14 @@ if [ "$MAX_DYNAMIC_PARTITIONS_PER_NODE" != "" ]; then
 	mv /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml.tmp /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml
 fi
 
-#if [ "$SPARK_POSTGRES_PASSWORD" != "" ]; then
-export SPARK_POSTGRES_PASSWORD = $(cat $SPARK_SECRETS_PATH\/SPARK_POSTGRES_PASSWORD)
+
+export SPARK_POSTGRES_PASSWORD=$(cat $SPARK_SECRETS_PATH/SPARK_POSTGRES_PASSWORD)
 
 sed "s/SPARK_POSTGRES_PASSWORD/$SPARK_POSTGRES_PASSWORD/" /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml >> /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml.tmp && \
 mv /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml.tmp /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml
 cp /opt/spark-2.1.0-bin-hadoop2.7/conf/hive-site.xml /opt/hadoop/etc/hadoop/
 
-export POSTGRES_PASSWORD=$(cat $SPARK_SECRETS_PATH\/POSTGRES_PASSWORD)
+export POSTGRES_PASSWORD=$(cat $SPARK_SECRETS_PATH/POSTGRES_PASSWORD)
 export PGPASSWORD=$POSTGRES_PASSWORD 
 
 psql -h $POSTGRES_HOSTNAME -p $POSTGRES_PORT  -U $POSTGRES_USER -d $POSTGRES_DB -c "CREATE USER $SPARK_POSTGRES_USER WITH PASSWORD '$SPARK_POSTGRES_PASSWORD';"
@@ -337,20 +337,16 @@ hdfs dfs -mkdir /tmp/hive
 
 #Check if there is no workaround this permissions
 hdfs dfs -chmod -R 777 /tmp/hive
-#fi
 
-unset SPARK_POSTGRES_PASSWORD
-unset POSTGRES_PASSWORD
 
-#if [ "$NOTEBOOK_PASSWORD" != "" ]; then
-export NOTEBOOK_PASSWORD=$(cat $SPARK_SECRETS_PATH\/NOTEBOOK_PASSWORD)
+
+
+export NOTEBOOK_PASSWORD=$(cat $SPARK_SECRETS_PATH/NOTEBOOK_PASSWORD)
 
 pass=$(python /opt/password.py  $NOTEBOOK_PASSWORD)
 sed "s/#c.NotebookApp.password = u.*/c.NotebookApp.password = u\'$pass\'/" /root/.jupyter/jupyter_notebook_config.py >> /root/.jupyter/jupyter_notebook_config.py.tmp && \
 mv /root/.jupyter/jupyter_notebook_config.py.tmp /root/.jupyter/jupyter_notebook_config.py
-rm -rf /opt/password.py 
-#fi 
-unset NOTEBOOK_PASSWORD
+
 
 if [ "$EX_MEM" != "" ]; then
 	sed "s/EX_MEM/$EX_MEM/" /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf >> /opt/spark-2.1.0-bin-hadoop2.7/conf/spark-defaults.conf.tmp && \
