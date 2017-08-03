@@ -168,13 +168,11 @@ if [ "$MAX_DYNAMIC_PARTITIONS_PER_NODE" == "" ]; then
   MAX_DYNAMIC_PARTITIONS_PER_NODE=100
 fi
 
-if [ "$SPARK_CONTAINER_DIR" != "" ]; then
-    
-    cp /opt/spark-2.1.0-bin-hadoop2.7/jars/datalake-client-libraries-1.5-SNAPSHOT.jar $HADOOP_HOME/share/hadoop/common/
-    cp /opt/spark-2.1.0-bin-hadoop2.7/jars/datalake-client-libraries-1.5-SNAPSHOT.jar $HADOOP_HOME/share/hadoop/common/lib/
-    cp /root/google-collections-1.0.jar /opt/spark-2.1.0-bin-hadoop2.7/jars/
-    cp $SPARK_CONTAINER_DIR/user.keytab $KEYTAB_PATH_URI
-fi 
+cp /opt/spark-2.1.0-bin-hadoop2.7/jars/datalake-client-libraries-1.5-SNAPSHOT.jar $HADOOP_HOME/share/hadoop/common/
+cp /opt/spark-2.1.0-bin-hadoop2.7/jars/datalake-client-libraries-1.5-SNAPSHOT.jar $HADOOP_HOME/share/hadoop/common/lib/
+cp /opt/spark-2.1.0-bin-hadoop2.7/jars/datalake-client-libraries-1.5-SNAPSHOT.jar $HADOOP_HOME/share/hadoop/common/hdfs/
+cp /root/google-collections-1.0.jar /opt/spark-2.1.0-bin-hadoop2.7/jars/
+cp /bigstep/kerberos/user.keytab $KEYTAB_PATH_URI
 
 if [ "$NOTEBOOK_DIR" != "" ]; then
 
