@@ -17,7 +17,7 @@
 
 <property>
 <name>fs.dl.impl.kerberosPrincipal</name>
-<value>DATALAKE_USER@bigstep.io</value>
+<value>DATALAKE_USER@bigstep.cc</value>
 </property>
 
 <property>
@@ -32,12 +32,12 @@
 
 <property>
 <name>fs.dl.impl.kerberosRealm</name>
-<value>bigstep.io</value>
+<value>bigstep.cc</value>
 </property>
 
 <property>
 <name>fs.dl.impl.kerberosRealm</name>
-<value>bigstep.io</value>
+<value>bigstep.cc</value>
 </property>
 
 <!-- optional -->
